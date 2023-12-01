@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import javax.net.ssl.HandshakeCompletedEvent;
 
 public class InGame extends AppCompatActivity {
     /** ImageView of ship */
@@ -66,26 +69,13 @@ public class InGame extends AppCompatActivity {
             }
         });
 
-//        shootBtn.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                    Log.i("Touch", "down");
-//                    shootBtn.setTextColor(Color.GREEN);
-//                }
-//                if (event.getAction() == MotionEvent.ACTION_UP) {
-//                    Log.i("Touch", "up");
-//                    handlerShooting.post(shootingCooldown);
-//                }
-//                return true;
-//            }
-//        });
-
         shootBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("Touch", "down");
-                handlerShooting.post(shootingCooldown);
+                shootBtn.setTextColor(Color.GRAY);
+                shootBtn.setEnabled(false);
+                handlerShooting.postDelayed(shootingCooldown, 1000);
             }
         });
     }
@@ -111,12 +101,12 @@ public class InGame extends AppCompatActivity {
             handlerRight.postDelayed(this, 17); // fps = 1000/17
         }
     };
-
     private Handler handlerShooting = new Handler(Looper.getMainLooper());
     private Runnable shootingCooldown = new Runnable() {
         @Override
         public void run() {
-
+            shootBtn.setTextColor(Color.WHITE);
+            shootBtn.setEnabled(true);
         }
     };
 }
