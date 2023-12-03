@@ -2,5 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="maincolor">#FF08F600</color>
+    <color name="maingreen">#FF08F600</color>
+    <color name="itemyellow">#FFFFFF54</color>
 </resources>
