@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class ItemAdapter extends BaseAdapter {
     Context context;
     LayoutInflater inflater;
@@ -52,10 +54,10 @@ public class ItemAdapter extends BaseAdapter {
         TextView itemPrice = view.findViewById(R.id.itemprice);
         TextView itemQuantity = view.findViewById(R.id.itemquantity);
 
-        itemImage.setImageResource(R.drawable.item_shield);
+        itemImage.setImageResource(arrItemImage[position]);
         itemName.setText(arrItemName[position]);
         itemPrice.setText(String.valueOf(arrItemPrice[position]));
-        itemQuantity.setText(String.valueOf(arrItemQuantity[position]));
+        itemQuantity.setText("quantity : " + String.valueOf(arrItemQuantity[position]));
 
         return view;
     }

@@ -13,7 +13,7 @@ public class ItemStore extends AppCompatActivity {
 
     GridView gridView;
     int[] itemImage = {R.drawable.item_shield, R.drawable.item_bomb, R.drawable.item_bstone, R.drawable.item_pstone};
-    String[] itemName = {"shield", "bomb", "bstone", "pstone"};
+    String[] itemName = {"Shield", "Bomb", "Blue Gem", "Pink Gem"};
     int[] itemPrice = {50, 100, 150, 150};
     int[] itemQuantity = {0,1,2,3};
     int coinQuantity = 0;
@@ -29,12 +29,12 @@ public class ItemStore extends AppCompatActivity {
         ItemAdapter itemAdapter = new ItemAdapter(ItemStore.this, itemImage, itemName, itemPrice, itemQuantity);
 
         gridView.setAdapter(itemAdapter);
-//
-//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(getApplicationContext(), itemName[position] + "번 선택", Toast.LENGTH_SHORT);
-//            }
-//        });
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), itemName[position] + "번 선택", Toast.LENGTH_SHORT);
+            }
+        });
     }
 }
