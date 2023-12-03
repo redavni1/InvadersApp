@@ -11,23 +11,26 @@ import android.widget.TextView;
 public class ItemAdapter extends BaseAdapter {
     Context context;
     LayoutInflater inflater;
-    String[] arrItemPrice;
-    int[] arrItemImage;
 
-    public ItemAdapter(Context context, String[] arrItemPrice, int[] arrItemImage) {
+    int[] arrItemImage, arrItemPrice, arrItemQuantity;
+    String[] arrItemName;
+
+    public ItemAdapter(Context context, int[] arrItemImage, String[] arrItemName, int[] arrItemPrice, int[] arrItemQuantity) {
         this.context = context;
-        this.arrItemPrice = arrItemPrice;
+        this.arrItemName = arrItemName;
         this.arrItemImage = arrItemImage;
+        this.arrItemPrice = arrItemPrice;
+        this.arrItemQuantity = arrItemQuantity;
     }
 
     @Override
     public int getCount() {
-        return arrItemPrice.length;
+        return arrItemName.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return arrItemPrice[position];
+        return arrItemName[position];
     }
 
     @Override
@@ -45,10 +48,14 @@ public class ItemAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.item_layout, null);
         }
         ImageView itemImage = view.findViewById(R.id.itemimage);
+        TextView itemName = view.findViewById(R.id.itemname);
         TextView itemPrice = view.findViewById(R.id.itemprice);
+        TextView itemQuantity = view.findViewById(R.id.itemquantity);
 
-        itemImage.setImageResource(arrItemImage[position]);
-        itemPrice.setText(arrItemPrice[position]);
+        itemImage.setImageResource(R.drawable.item_shield);
+        itemName.setText(arrItemName[position]);
+        itemPrice.setText(String.valueOf(arrItemPrice[position]));
+        itemQuantity.setText(String.valueOf(arrItemQuantity[position]));
 
         return view;
     }

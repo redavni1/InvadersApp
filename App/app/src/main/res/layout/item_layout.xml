@@ -9,18 +9,45 @@
         android:id="@+id/itemimage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/itemname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-5dp"
+        android:fontFamily="@font/blackopsone"
+        android:text="itemname"
+        android:textColor="@color/white"
+        android:textSize="8dp" />
+
+    <TextView
+        android:id="@+id/itemquantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-5dp"
+        android:layout_gravity="end"
+        android:fontFamily="@font/blackopsone"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textSize="10dp" />
+
     <TextView
         android:id="@+id/itemprice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:fontFamily="@font/blackopsone"
+        android:textColor="@color/itemyellow"
         android:text="0"
         android:textSize="10dp" />
+
+
     <TextView
         android:id="@+id/buytext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:fontFamily="@font/blackopsone"
         android:text="B U Y"
         android:textSize="10dp" />
 
