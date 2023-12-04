@@ -1,9 +1,11 @@
 package com.invaders.invadersapp;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +33,8 @@ public class InGame extends AppCompatActivity {
     /** ImageView of bullet1, 2. */
     private ImageView bullet1;
     private ImageView bullet2;
+    /** Bullet's width. */
+    private float bulletWidth = 17;
     /** Map for linking bullet and bullet's runnable. */
     private Map<ImageView, BulletRunnable> runnableMap;
     /** Temporary ImageView for shot bullet. */
@@ -56,6 +60,7 @@ public class InGame extends AppCompatActivity {
 
         bullet1 = (ImageView) findViewById(R.id.bullet1);
         bullet2 = (ImageView) findViewById(R.id.bullet2);
+
         // Initialize runnableMap for linking bullet ImageView and their runnable.
         runnableMap = new HashMap<ImageView, BulletRunnable>() {{
             put(bullet1, new BulletRunnable(bullet1));
@@ -69,7 +74,7 @@ public class InGame extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    // Change left button's color green and ship's location to left when it touched.
+                    // Change left button's color green and ship's position to left when it touched.
                     leftIcon.setImageResource(R.drawable.left_touched);
                     movingLeft.movingHandler.post(movingLeft);
                 }
@@ -86,7 +91,7 @@ public class InGame extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    // Change right button's color green and ship's location to right when it touched.
+                    // Change right button's color green and ship's position to right when it touched.
                     rightIcon.setImageResource(R.drawable.right_touched);
                     movingRight.movingHandler.post(movingRight);
                 }
@@ -109,9 +114,9 @@ public class InGame extends AppCompatActivity {
                 // Change shootbtn's color gray and Set it disable.
                 shootBtn.setTextColor(Color.GRAY);
                 shootBtn.setEnabled(false);
-                // Initialize loaded bullet's location.
-                loadedBullet.setX(ship.getX()+ship.getWidth()/2-loadedBullet.getWidth()/2);
-                loadedBullet.setY(ship.getY()+2);
+                // Initialize loaded bullet's position.
+                loadedBullet.setX(ship.getX() + ((float) ship.getWidth() - bulletWidth)/2);
+                loadedBullet.setY(ship.getY());
                 // Run loaded bullet's runnable for shooting.
                 runnableMap.get(loadedBullet).run();
                 // Add bullet to last of the list.
