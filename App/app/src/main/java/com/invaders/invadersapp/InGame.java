@@ -14,8 +14,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -44,6 +46,9 @@ public class InGame extends AppCompatActivity {
     private Map<ImageView, BulletRunnable> runnableMap;
     /** Temporary ImageView for shot bullet. */
     private ImageView loadedBullet;
+    private Enemy enemy;
+    private List<Enemy> enemies;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +82,12 @@ public class InGame extends AppCompatActivity {
         // Add bullets into their LinkedList for reusing.
         bullets.add(bullet1);
         bullets.add(bullet2);
+
+
+
+        difficultyLevel.getContext(this);
+        setEnemiesByLevel();
+
 
         leftIcon.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -115,6 +126,9 @@ public class InGame extends AppCompatActivity {
         shootBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 // Load bullet that is head of the list.
                 loadedBullet = bullets.poll();
                 // Set loaded bullet's image resource.
@@ -126,6 +140,7 @@ public class InGame extends AppCompatActivity {
                 loadedBullet.setX(ship.getX() + ((float) ship.getWidth() - bulletWidth)/2);
                 loadedBullet.setY(ship.getY());
                 // Run loaded bullet's runnable for shooting.
+                runnableMap.get(loadedBullet).setEnemyList(enemies);
                 runnableMap.get(loadedBullet).run();
                 // Add bullet to last of the list.
                 bullets.add(loadedBullet);
@@ -146,4 +161,19 @@ public class InGame extends AppCompatActivity {
             shootBtn.setEnabled(true);
         }
     };
+
+    private void setEnemiesByLevel() {
+        enemies = new ArrayList<>();
+        Enemy[][] tmpEnemies = difficultyLevel.setEnemies();
+        for (int i = 0; i < tmpEnemies.length; i++) {
+            for (int j = 0; j < tmpEnemies[0].length; j++) {
+                tmpEnemies[i][j].setVisible();
+                enemies.add(tmpEnemies[i][j]);
+            }
+        }
+    }
+    private void nextLevel() {
+        difficultyLevel.level += 1;
+        setEnemiesByLevel();
+    }
 }
