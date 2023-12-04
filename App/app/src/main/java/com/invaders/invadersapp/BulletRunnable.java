@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 
 
-public class BulletRunnable extends InGame implements Runnable {
+public class BulletRunnable implements Runnable {
     public Handler handlerBullet = new Handler(Looper.getMainLooper());
     private ImageView loadedBullet;
     public BulletRunnable(ImageView b) {

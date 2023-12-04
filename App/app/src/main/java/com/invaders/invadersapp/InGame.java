@@ -15,12 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 
 public class InGame extends AppCompatActivity {
     /** ImageView of ship */
-    private ImageView ship;
+    public ImageView ship;
+    private ImageView leftIcon;
+    private ImageView rightIcon;
     private TextView shootBtn;
     private LinkedList<ImageView> bullets = new LinkedList<>();;
     private ImageView bullet1;
@@ -32,13 +35,19 @@ public class InGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingame);
 
-        ImageView left_icon = (ImageView) findViewById(R.id.left_icon);
-        ImageView right_icon = (ImageView) findViewById(R.id.right_icon);
+        leftIcon = (ImageView) findViewById(R.id.left_icon);
+        rightIcon = (ImageView) findViewById(R.id.right_icon);
+        leftIcon.setImageResource(R.drawable.left_button);
+        rightIcon.setImageResource(R.drawable.right_button);
+
+        MovingRunnable movingLeft = new MovingRunnable(leftIcon);
+        MovingRunnable movingRight = new MovingRunnable(rightIcon);
+
+
         ship = (ImageView) findViewById(R.id.ship);
         shootBtn = (TextView) findViewById(R.id.shoot);
         // set img on left and right buttons
-        left_icon.setImageResource(R.drawable.left_button);
-        right_icon.setImageResource(R.drawable.right_button);
+
 
         shootBtn.setTextColor(Color.WHITE);
 
@@ -53,35 +62,35 @@ public class InGame extends AppCompatActivity {
         bullets.add(bullet1);
         bullets.add(bullet2);
 
-        left_icon.setOnTouchListener(new View.OnTouchListener() {
+        leftIcon.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // change left button green when it touched
-                    left_icon.setImageResource(R.drawable.left_touched);
-                    handlerLeft.post(runnableLeft);
+                    leftIcon.setImageResource(R.drawable.left_touched);
+                    movingLeft.movingHandler.post(movingLeft);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     // change left button white
-                    left_icon.setImageResource(R.drawable.left_button);
-                    handlerLeft.removeCallbacks(runnableLeft);
+                    leftIcon.setImageResource(R.drawable.left_button);
+                    movingLeft.movingHandler.removeCallbacks(movingLeft);
                 }
                 return true;
             }
         });
 
-        right_icon.setOnTouchListener(new View.OnTouchListener() {
+        rightIcon.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // change right button green when it touched
-                    right_icon.setImageResource(R.drawable.right_touched);
-                    handlerRight.post(runnableRight);
+                    rightIcon.setImageResource(R.drawable.right_touched);
+                    movingRight.movingHandler.post(movingRight);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     // change right button white
-                    right_icon.setImageResource(R.drawable.right_button);
-                    handlerRight.removeCallbacks(runnableRight);
+                    rightIcon.setImageResource(R.drawable.right_button);
+                    movingRight.movingHandler.removeCallbacks(movingRight);
                 }
                 return true;
             }
@@ -102,28 +111,7 @@ public class InGame extends AppCompatActivity {
             }
         });
     }
-    /** Handler for left button to control runnableLeft */
-    private Handler handlerLeft = new Handler(Looper.getMainLooper());
-    /** Runnable to move ship left */
-    private Runnable runnableLeft = new Runnable() {
-        @Override
-        public void run() {
-            if (ship.getX()-8 > 0) ship.setX(ship.getX()-8);
-            else ship.setX(0);
-            handlerLeft.postDelayed(this, 17); // fps = 1000/17
-        }
-    };
-    /** Handler for right button to control runnableRight */
-    private Handler handlerRight = new Handler(Looper.getMainLooper());
-    /** Runnable to move ship right */
-    private Runnable runnableRight = new Runnable() {
-        @Override
-        public void run() {
-            if (ship.getX()+8 < 1008) ship.setX(ship.getX()+8);
-            else ship.setX(1008);
-            handlerRight.postDelayed(this, 17); // fps = 1000/17
-        }
-    };
+
     private Handler handlerShooting = new Handler(Looper.getMainLooper());
     private Runnable shootingCooldown = new Runnable() {
         @Override
