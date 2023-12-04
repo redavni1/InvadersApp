@@ -1,6 +1,6 @@
 package com.invaders.invadersapp;
 
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +20,11 @@ import java.util.Map;
 
 
 public class InGame extends AppCompatActivity {
+    Intent intent;
+    DifficultyLevel difficultyLevel;
+
+
+
     /** ImageView of ship. */
     private ImageView ship;
     /** ImageView of left icon. */
@@ -43,6 +48,9 @@ public class InGame extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingame);
+
+        intent = getIntent();
+        difficultyLevel = (DifficultyLevel) intent.getSerializableExtra("Level", DifficultyLevel.class);
 
         leftIcon = (ImageView) findViewById(R.id.left_icon);
         rightIcon = (ImageView) findViewById(R.id.right_icon);

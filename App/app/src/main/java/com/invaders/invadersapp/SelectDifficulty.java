@@ -18,6 +18,7 @@ public class SelectDifficulty extends AppCompatActivity {
     private TextView title;
     /** Runnable object for text blinking. */
     private BlinkingRunnable br;
+    private DifficultyLevel difficultyLevel = new DifficultyLevel();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +44,9 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
+                difficultyLevel.difficulty = "EASY";
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
+                intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);
             }
         });
@@ -52,7 +55,9 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
+                difficultyLevel.difficulty = "NORMAL";
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
+                intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);
             }
         });
@@ -61,7 +66,9 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
+                difficultyLevel.difficulty = "HARD";
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
+                intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);
             }
         });
@@ -70,7 +77,9 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
+                difficultyLevel.difficulty = "HARDCORE";
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
+                intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);
             }
         });
