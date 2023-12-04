@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,12 +13,20 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import javax.net.ssl.HandshakeCompletedEvent;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
 
 public class InGame extends AppCompatActivity {
     /** ImageView of ship */
     private ImageView ship;
     private TextView shootBtn;
+    private LinkedList<ImageView> bullets = new LinkedList<>();;
+    private ImageView bullet1;
+    private ImageView bullet2;
+    private Map<ImageView, BulletRunnable> runnableMap;
+    private ImageView loadedBullet;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +41,17 @@ public class InGame extends AppCompatActivity {
         right_icon.setImageResource(R.drawable.right_button);
 
         shootBtn.setTextColor(Color.WHITE);
+
+        bullet1 = (ImageView) findViewById(R.id.bullet1);
+        bullet2 = (ImageView) findViewById(R.id.bullet2);
+
+        runnableMap = new HashMap<ImageView, BulletRunnable>() {{
+            put(bullet1, new BulletRunnable(bullet1));
+            put(bullet2, new BulletRunnable(bullet2));
+        }};
+
+        bullets.add(bullet1);
+        bullets.add(bullet2);
 
         left_icon.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -72,9 +90,14 @@ public class InGame extends AppCompatActivity {
         shootBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Touch", "down");
+                loadedBullet = bullets.poll();
+                loadedBullet.setImageResource(R.drawable.bullet);
                 shootBtn.setTextColor(Color.GRAY);
                 shootBtn.setEnabled(false);
+                loadedBullet.setX(ship.getX()+ship.getWidth()/2-loadedBullet.getWidth()/2);
+                loadedBullet.setY(ship.getY()+2);
+                runnableMap.get(loadedBullet).run();
+                bullets.add(loadedBullet);
                 handlerShooting.postDelayed(shootingCooldown, 1000);
             }
         });
