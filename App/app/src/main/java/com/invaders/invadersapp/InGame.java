@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,20 +14,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 
 public class InGame extends AppCompatActivity {
-    /** ImageView of ship */
+    /** ImageView of ship. */
     public ImageView ship;
+    /** ImageView of left icon. */
     private ImageView leftIcon;
+    /** ImageView of right icon. */
     private ImageView rightIcon;
+    /** TextView of "S H O O T" button. */
     private TextView shootBtn;
-    private LinkedList<ImageView> bullets = new LinkedList<>();;
+    /** LinkedList for reusing bullets. */
+    private LinkedList<ImageView> bullets = new LinkedList<>();
+    /** ImageView of bullet1, 2. */
     private ImageView bullet1;
     private ImageView bullet2;
+    /** Map for linking bullet and bullet's runnable. */
     private Map<ImageView, BulletRunnable> runnableMap;
+    /** Temporary ImageView for shot bullet. */
     private ImageView loadedBullet;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,26 +44,24 @@ public class InGame extends AppCompatActivity {
         rightIcon = (ImageView) findViewById(R.id.right_icon);
         leftIcon.setImageResource(R.drawable.left_button);
         rightIcon.setImageResource(R.drawable.right_button);
-
+        // Initialize direction icons' runnable.
         MovingRunnable movingLeft = new MovingRunnable(leftIcon);
         MovingRunnable movingRight = new MovingRunnable(rightIcon);
 
 
         ship = (ImageView) findViewById(R.id.ship);
         shootBtn = (TextView) findViewById(R.id.shoot);
-        // set img on left and right buttons
-
-
+        // Initialize shoot button's color white.
         shootBtn.setTextColor(Color.WHITE);
 
         bullet1 = (ImageView) findViewById(R.id.bullet1);
         bullet2 = (ImageView) findViewById(R.id.bullet2);
-
+        // Initialize runnableMap for linking bullet ImageView and their runnable.
         runnableMap = new HashMap<ImageView, BulletRunnable>() {{
             put(bullet1, new BulletRunnable(bullet1));
             put(bullet2, new BulletRunnable(bullet2));
         }};
-
+        // Add bullets into their LinkedList for reusing.
         bullets.add(bullet1);
         bullets.add(bullet2);
 
@@ -66,12 +69,12 @@ public class InGame extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    // change left button green when it touched
+                    // Change left button's color green and ship's location to left when it touched.
                     leftIcon.setImageResource(R.drawable.left_touched);
                     movingLeft.movingHandler.post(movingLeft);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    // change left button white
+                    // Change left button's color white and Stop ship's moving when it stops being touched.
                     leftIcon.setImageResource(R.drawable.left_button);
                     movingLeft.movingHandler.removeCallbacks(movingLeft);
                 }
@@ -83,12 +86,12 @@ public class InGame extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    // change right button green when it touched
+                    // Change right button's color green and ship's location to right when it touched.
                     rightIcon.setImageResource(R.drawable.right_touched);
                     movingRight.movingHandler.post(movingRight);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    // change right button white
+                    // Change left button's color white and Stop ship's moving when it stops being touched.
                     rightIcon.setImageResource(R.drawable.right_button);
                     movingRight.movingHandler.removeCallbacks(movingRight);
                 }
@@ -99,23 +102,33 @@ public class InGame extends AppCompatActivity {
         shootBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Load bullet that is head of the list.
                 loadedBullet = bullets.poll();
+                // Set loaded bullet's image resource.
                 loadedBullet.setImageResource(R.drawable.bullet);
+                // Change shootbtn's color gray and Set it disable.
                 shootBtn.setTextColor(Color.GRAY);
                 shootBtn.setEnabled(false);
+                // Initialize loaded bullet's location.
                 loadedBullet.setX(ship.getX()+ship.getWidth()/2-loadedBullet.getWidth()/2);
                 loadedBullet.setY(ship.getY()+2);
+                // Run loaded bullet's runnable for shooting.
                 runnableMap.get(loadedBullet).run();
+                // Add bullet to last of the list.
                 bullets.add(loadedBullet);
-                handlerShooting.postDelayed(shootingCooldown, 1000);
+                // Set shootbtn's color white and Set it enable again one second later.
+                handlerShooting.postDelayed(shootingCoolDown, 1000);
             }
         });
     }
 
+    /** Handler to control shooting cool down runnable. */
     private Handler handlerShooting = new Handler(Looper.getMainLooper());
-    private Runnable shootingCooldown = new Runnable() {
+    /** Runnable for cool down. */
+    private Runnable shootingCoolDown = new Runnable() {
         @Override
         public void run() {
+            // Set shootbtn's color white and Set it enable.
             shootBtn.setTextColor(Color.WHITE);
             shootBtn.setEnabled(true);
         }

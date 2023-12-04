@@ -2,18 +2,26 @@ package com.invaders.invadersapp;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.ImageView;
 
 
 
 public class BulletRunnable implements Runnable {
-    public Handler handlerBullet = new Handler(Looper.getMainLooper());
+    /** Handler to control runnable. */
+    private Handler handlerBullet = new Handler(Looper.getMainLooper());
+    /** ImageView of loaded bullet */
     private ImageView loadedBullet;
+
+    /**
+     * Initialize b's BulletRunnable.
+     *
+     * @param b Loaded bullet.
+     */
     public BulletRunnable(ImageView b) {
+        // Set parameter to loadedBullet.
         loadedBullet = b;
     }
-
+    /** Start run to shoot bullet. */
     @Override
     public void run() {
         loadedBullet.setY(loadedBullet.getY()-16);
@@ -21,7 +29,7 @@ public class BulletRunnable implements Runnable {
             loadedBullet.setImageResource(0);
             handlerBullet.removeCallbacks(this);
         } else {
-            handlerBullet.postDelayed(this, 17);
+            handlerBullet.postDelayed(this, 17); // fps = 1000/17
         }
     }
 }
