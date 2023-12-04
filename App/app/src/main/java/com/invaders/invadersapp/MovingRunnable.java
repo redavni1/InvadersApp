@@ -7,6 +7,7 @@ import android.widget.ImageView;
 public class MovingRunnable extends InGame implements Runnable{
     /** ImageView of this runnable. */
     private ImageView icon;
+    private ImageView ship;
     /** Ship's moving distance by a frame. */
     private float distance;
     /** Edge's X location(left : 0/right : 1008). */
@@ -17,11 +18,13 @@ public class MovingRunnable extends InGame implements Runnable{
      *
      * @param i ImageView of this runnable.
      */
-    public MovingRunnable(ImageView i) {
-        // Set parameter to icon.
+    public MovingRunnable(ImageView i, ImageView s) {
+        // Set i to icon.
         icon = i;
+        // Set s to ship
+        ship = s;
         // Set ship's distance and edge's X location.
-        if (icon.getId() == (int) 1000024) { // if i.getId() == R.id.left_icon
+        if (icon.getId() == R.id.left_icon) { // if i is left icon
             distance = -8;
             edge = 0;
         } else {
@@ -34,7 +37,8 @@ public class MovingRunnable extends InGame implements Runnable{
     /** Start run to move ship. */
     @Override
     public void run() {
-        if (ship.getX()+distance > 0) ship.setX(ship.getX()+distance);
+        float nextX = ship.getX()+distance;
+        if (nextX > 0 && nextX < 1008) ship.setX(nextX);
         else ship.setX(edge);
         movingHandler.postDelayed(this, 17); // fps = 1000/17
     }

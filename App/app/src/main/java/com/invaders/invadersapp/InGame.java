@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class InGame extends AppCompatActivity {
     /** ImageView of ship. */
-    public ImageView ship;
+    private ImageView ship;
     /** ImageView of left icon. */
     private ImageView leftIcon;
     /** ImageView of right icon. */
@@ -44,12 +44,12 @@ public class InGame extends AppCompatActivity {
         rightIcon = (ImageView) findViewById(R.id.right_icon);
         leftIcon.setImageResource(R.drawable.left_button);
         rightIcon.setImageResource(R.drawable.right_button);
-        // Initialize direction icons' runnable.
-        MovingRunnable movingLeft = new MovingRunnable(leftIcon);
-        MovingRunnable movingRight = new MovingRunnable(rightIcon);
-
 
         ship = (ImageView) findViewById(R.id.ship);
+        // Initialize direction icons' runnable.
+        MovingRunnable movingLeft = new MovingRunnable(leftIcon, ship);
+        MovingRunnable movingRight = new MovingRunnable(rightIcon, ship);
+
         shootBtn = (TextView) findViewById(R.id.shoot);
         // Initialize shoot button's color white.
         shootBtn.setTextColor(Color.WHITE);
