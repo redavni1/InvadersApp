@@ -252,7 +252,7 @@ public class InGame extends AppCompatActivity {
         remainLives--;
         livesTextView.setText(remainLives+"");
         lifeIcons[remainLives].setVisibility(View.GONE);
-        if (checkGameOver()) gameOver();
+        if (checkNoLives()) gameOver();
         else {
             leftIcon.setEnabled(false);
             rightIcon.setEnabled(false);
@@ -276,7 +276,7 @@ public class InGame extends AppCompatActivity {
             shipDestructionHandler.removeCallbacks(this);
         }
     };
-    private boolean checkGameOver() { return remainLives == 0; }
+    private boolean checkNoLives() { return remainLives == 0; }
     private void gameOver() {
         handlerEnemyShooting.removeCallbacks(enemyShootingRunnable);
         runnableMap.get(bullet1).removeRunnable();
