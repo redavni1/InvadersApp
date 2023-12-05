@@ -27,4 +27,4 @@ jobs:
       run: ./App/gradlew build
 
     - name: Test with Gradle
-      run: ./App/gradlew test
+      run: ./App/gradlew :App:app:src:test
