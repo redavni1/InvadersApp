@@ -23,4 +23,11 @@ public class EnemyFormation extends InGame {
         }
         return true;
     }
+    public void stopEnemiesMoving() {
+        for (List<Enemy> list : enemyFormation) {
+            for (Enemy enemy : list) {
+                enemy.stopMoving();
+            }
+        }
+    }
 }

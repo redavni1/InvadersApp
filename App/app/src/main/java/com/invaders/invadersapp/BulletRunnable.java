@@ -54,4 +54,5 @@ public class BulletRunnable extends InGame implements Runnable {
         }
         return false;
     }
+    public void removeRunnable() { handlerBullet.removeCallbacks(this); }
 }

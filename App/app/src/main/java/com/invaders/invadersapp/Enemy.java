@@ -54,5 +54,6 @@ public class Enemy extends InGame {
             handlerMoving.postDelayed(this, 1500);
         }
     };
+    public void stopMoving() { handlerMoving.removeCallbacks(movingRunnable); }
 
 }

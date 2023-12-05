@@ -51,6 +51,8 @@ public class InGame extends AppCompatActivity {
     private int remainLives = 3;
     private TextView livesTextView;
     private ImageView[] lifeIcons;
+    private TextView gameOverTextView;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +61,10 @@ public class InGame extends AppCompatActivity {
 
         intent = getIntent();
         difficultyLevel = (DifficultyLevel) intent.getSerializableExtra("Level", DifficultyLevel.class);
+
+        gameOverTextView = (TextView) findViewById(R.id.gameover);
+        gameOverTextView.setVisibility(View.GONE);
+        gameOverTextView.setTextColor(Color.WHITE);
 
         livesTextView = (TextView) findViewById(R.id.livesText);
         livesTextView.setTextColor(Color.WHITE);
@@ -178,6 +184,7 @@ public class InGame extends AppCompatActivity {
             // Set shootbtn's color white and Set it enable.
             shootBtn.setTextColor(Color.WHITE);
             shootBtn.setEnabled(true);
+            handlerShooting.removeCallbacks(shootingCoolDown);
         }
     };
 
@@ -241,11 +248,16 @@ public class InGame extends AppCompatActivity {
         remainLives--;
         livesTextView.setText(remainLives+"");
         lifeIcons[remainLives].setVisibility(View.GONE);
-        leftIcon.setEnabled(false);
-        rightIcon.setEnabled(false);
-        ship.setImageResource(R.drawable.ship_destroyed);
-        shipDestructionHandler.postDelayed(shipDestructionRunnable, 1500); // destruction cool down = 1.5 sec
         if (checkGameOver()) gameOver();
+        else {
+            leftIcon.setEnabled(false);
+            rightIcon.setEnabled(false);
+            leftIcon.setImageResource(R.drawable.left_disable);
+            rightIcon.setImageResource(R.drawable.right_disable);
+            shootBtn.setTextColor(Color.GRAY);
+            ship.setImageResource(R.drawable.ship_destroyed);
+            shipDestructionHandler.postDelayed(shipDestructionRunnable, 1500); // destruction cool down = 1.5 sec
+        }
     }
     private Handler shipDestructionHandler = new Handler(Looper.getMainLooper());
     private Runnable shipDestructionRunnable = new Runnable() {
@@ -253,10 +265,29 @@ public class InGame extends AppCompatActivity {
         public void run() {
             leftIcon.setEnabled(true);
             rightIcon.setEnabled(true);
+            leftIcon.setImageResource(R.drawable.left_button);
+            rightIcon.setImageResource(R.drawable.right_button);
+            shootBtn.setTextColor(Color.WHITE);
             ship.setImageResource(R.drawable.ship);
             shipDestructionHandler.removeCallbacks(this);
         }
     };
     private boolean checkGameOver() { return remainLives == 0; }
-    private void gameOver() {}
+    private void gameOver() {
+        handlerEnemyShooting.removeCallbacks(enemyShootingRunnable);
+        runnableMap.get(bullet1).removeRunnable();
+        runnableMap.get(bullet2).removeRunnable();
+        handlerEnemyBullet.removeCallbacks(enemyBulletRunnable);
+        shootBtn.setTextColor(Color.GRAY);
+        shootBtn.setEnabled(false);
+        leftIcon.setEnabled(false);
+        rightIcon.setEnabled(false);
+        leftIcon.setImageResource(R.drawable.left_disable);
+        rightIcon.setImageResource(R.drawable.right_disable);
+        if (!enemyFormation.noEnemies()) {
+            enemyFormation.stopEnemiesMoving();
+            ship.setImageResource(R.drawable.ship_destroyed);
+        }
+        gameOverTextView.setVisibility(View.VISIBLE);
+    }
 }
