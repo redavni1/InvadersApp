@@ -26,6 +26,6 @@ jobs:
     - name: Run Tests
       run: |
         cd App
-        ./gradlew :app:src:test
+        ./gradlew test
         
         
