@@ -6,18 +6,24 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.LinkedList;
 import java.util.logging.Logger;
 
 public class Enemy extends InGame {
     private ImageView enemy;
     private float positionX;
     private float positionY;
+    private LinkedList<Integer> drawables;
     Context mcontext;
 
-    public Enemy(Context context, int id, int drawable, float x, float y) {
+    public Enemy(Context context, int id, int d1, int d2, float x, float y) {
         mcontext = context;
         enemy = (ImageView) ((InGame) mcontext).findViewById(id);
-        enemy.setImageResource(drawable);
+        drawables = new LinkedList<>();
+        drawables.add(d1);
+        drawables.add(d2);
+        enemy.setImageResource(drawables.getFirst());
+        drawables.add(drawables.poll());
         positionX = x;
         positionY = y;
         enemy.setVisibility(View.GONE);
@@ -43,6 +49,8 @@ public class Enemy extends InGame {
         public void run() {
             enemy.setX(enemy.getX()+distanceX);
             enemy.setY(enemy.getY()+distanceY);
+            enemy.setImageResource(drawables.getFirst());
+            drawables.add(drawables.poll());
             handlerMoving.postDelayed(this, 1000);
         }
     };
