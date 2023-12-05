@@ -196,7 +196,7 @@ public class InGame extends AppCompatActivity {
             enemyBullet.setY(shooter.getPositionTopBottom()[1]);
             enemyBullet.setVisibility(View.VISIBLE);
             handlerEnemyBullet.post(enemyBulletRunnable);
-            handlerEnemyShooting.postDelayed(this, 3000); // Cool down = 3 sec
+            handlerEnemyShooting.postDelayed(this, 1500 + (int) (Math.random()*3500)); // Cool down = 1.5~5 sec
         }
     };
 
