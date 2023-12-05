@@ -70,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
                 br.changeColor(2, "GREEN");
 
-//                mBGMManager.mMediaPlayerForButtonClick.stop();
+                mBGMManager.mMediaPlayerForButtonClick.start();
+                mBGMManager.mMediaPlayerForGameScreenBGM.stop();
                 mstorebgm.storebgm_player.start();
 
                 Intent intent = new Intent(getApplicationContext(), ItemStore.class);
