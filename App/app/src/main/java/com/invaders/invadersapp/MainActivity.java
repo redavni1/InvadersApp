@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private String[] colors;
 
     public static BGMManager mBGMManager;
+    public static StoreBGM mstorebgm;
     private boolean isNextActivityButtonClick = false;
 
     @Override
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         colors = new String[]{"GREEN", "WHITE", "WHITE"};
 
         mBGMManager = BGMManager.getBGMManagerInstance(this);
+        mstorebgm = StoreBGM.getInstance(this);
+
 
         //Blinking starts.
         br = new BlinkingRunnable(textViews, colors);
@@ -67,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
                 br.changeColor(2, "GREEN");
 
-                mBGMManager.mMediaPlayerForButtonClick.start();
+//                mBGMManager.mMediaPlayerForButtonClick.stop();
+                mstorebgm.storebgm_player.start();
 
                 Intent intent = new Intent(getApplicationContext(), ItemStore.class);
                 startActivity(intent);

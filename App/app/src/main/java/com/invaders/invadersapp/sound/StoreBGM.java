@@ -17,7 +17,13 @@ public class StoreBGM {
     // Private constructor to prevent direct instantiation
     private StoreBGM(Context context) {
         this.context = context;
-        storebgm_player = MediaPlayer.create(context, R.raw.store_bgm); // create bgm player using bgm file
+        storebgm_player = MediaPlayer.create(context, R.raw.store_bgm);
+
+        // Check if MediaPlayer creation was successful
+        if (storebgm_player == null) {
+            throw new IllegalStateException("Failed to create MediaPlayer for store_bgm");
+        }
+
         storebgm_player.setLooping(true);  // Set background music to loop
     }
 
@@ -34,6 +40,15 @@ public class StoreBGM {
         if (!storebgm_player.isPlaying()) {
             storebgm_player.start();
         }
+    }
+
+    public void stop() {
+        if (storebgm_player.isPlaying()) {
+            storebgm_player.stop();
+        }
+        storebgm_player.release();
+        storebgm_player = null;
+        storebgm = null; // Reset the instance to allow recreation if needed
     }
 }
 
