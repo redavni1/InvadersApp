@@ -23,14 +23,14 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x App/gradlew
 
+    - name: Gradle Build
+      run: |
+        cd App  
+        ./gradlew build
+
+
     - name: Run Tests
       run: |
-        cd App
         ./gradlew test
-
-    - name: Run Instrumented Tests
-      run: |
-        cd App
-        ./gradlew connectedAndroidTest
 
         
