@@ -5,8 +5,8 @@ import android.content.Context;
 import java.io.Serializable;
 
 public class DifficultyLevel implements Serializable {
-    public String difficulty;
-    public int level;
+    private String difficulty;
+    private int level;
     private Enemy[][] enemiesFormation;
     Context mContext;
     private int[] drawables = {
@@ -15,6 +15,10 @@ public class DifficultyLevel implements Serializable {
             R.drawable.right_button,
             R.drawable.right_touched
     };
+    public void setLevel(int l) { level = l; }
+    public int getLevel() { return level; }
+    public void nextLevel() { level++; }
+    public void setDifficulty(String d) { difficulty = d; }
     public Enemy[][] setEnemies() {
         switch (difficulty) {
             case "EASY":

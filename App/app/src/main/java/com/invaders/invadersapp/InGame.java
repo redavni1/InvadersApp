@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class InGame extends AppCompatActivity {
     Intent intent;
-    DifficultyLevel difficultyLevel;
+    private DifficultyLevel difficultyLevel;
 
 
 
@@ -137,12 +137,8 @@ public class InGame extends AppCompatActivity {
         shootBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
                 // Load bullet that is head of the list.
                 loadedBullet = bullets.poll();
-
                 // Set loaded bullet's image resource.
                 loadedBullet.setImageResource(R.drawable.bullet);
                 // Change shootbtn's color gray and Set it disable.
@@ -184,8 +180,9 @@ public class InGame extends AppCompatActivity {
             }
         }
     }
-    private void nextLevel() {
-        difficultyLevel.level += 1;
+    public void nextLevel() {
+        handlerEnemyShooting.removeCallbacks(enemyShootingRunnable);
+        difficultyLevel.nextLevel();
         setEnemiesByLevel();
     }
     private Handler handlerEnemyShooting = new Handler(Looper.getMainLooper());
@@ -212,12 +209,19 @@ public class InGame extends AppCompatActivity {
             if(enemyBullet.getY() + enemyBullet.getHeight() > ship.getY()+ship.getHeight()) {
                 enemyBullet.setVisibility(View.GONE);
                 handlerEnemyBullet.removeCallbacks(this);
-//            } else if (checkCollision()) {
-//                loadedBullet.setImageResource(0);
-//                handlerBullet.removeCallbacks(this);
+            } else if (checkShipDestruction()) {
+                enemyBullet.setVisibility(View.GONE);
+                handlerEnemyBullet.removeCallbacks(this);
             } else {
                 handlerEnemyBullet.postDelayed(this, 17); // fps = 1000/17
             }
         }
     };
+    private boolean checkShipDestruction() {
+        float x = enemyBullet.getX();
+        float y = enemyBullet.getY()+enemyBullet.getHeight();
+        if (x+bulletWidth > ship.getX() && x < ship.getX()+ship.getWidth() && y > ship.getY())
+            return true;
+        return false;
+    }
 }

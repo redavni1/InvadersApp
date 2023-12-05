@@ -44,7 +44,7 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
-                difficultyLevel.difficulty = "EASY";
+                difficultyLevel.setDifficulty("EASY");
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
                 intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);
@@ -55,7 +55,7 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
-                difficultyLevel.difficulty = "NORMAL";
+                difficultyLevel.setDifficulty("NORMAL");
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
                 intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);
@@ -66,7 +66,7 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
-                difficultyLevel.difficulty = "HARD";
+                difficultyLevel.setDifficulty("HARD");
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
                 intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);
@@ -77,7 +77,7 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
-                difficultyLevel.difficulty = "HARDCORE";
+                difficultyLevel.setDifficulty("HARDCORE");
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
                 intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);

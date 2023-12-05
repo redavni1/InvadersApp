@@ -44,9 +44,10 @@ public class BulletRunnable extends InGame implements Runnable {
         float y = loadedBullet.getY();
         for (int i=0; i<enemyFormation.size(); i++) {
             for (Enemy enemy : enemyFormation.getOneList(i)) {
-                if (x > enemy.getPositionSides()[0] && x < enemy.getPositionSides()[1] && y < enemy.getPositionTopBottom()[1]) {
+                if (x+loadedBullet.getWidth() > enemy.getPositionSides()[0] && x < enemy.getPositionSides()[1] && y < enemy.getPositionTopBottom()[1]) {
                     enemyFormation.removeEnemy(enemy, i);
                     enemy.destroy();
+                    if (enemyFormation.noEnemies()) nextLevel();
                     return true;
                 }
             }

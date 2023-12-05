@@ -17,4 +17,10 @@ public class EnemyFormation extends InGame {
     public int size() { return enemyFormation.size(); }
     public List<Enemy> getOneList(int idx) { return enemyFormation.get(idx); }
     public void removeEnemy(Enemy enemy, int idx) { enemyFormation.get(idx).remove(enemy); }
+    public boolean noEnemies() {
+        for (List<Enemy> list : enemyFormation) {
+            if (!list.isEmpty()) return false;
+        }
+        return true;
+    }
 }

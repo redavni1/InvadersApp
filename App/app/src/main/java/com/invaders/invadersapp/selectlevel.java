@@ -52,7 +52,7 @@ public class selectlevel extends AppCompatActivity {
             public void onClick(View v) {
                 // action of level1 button
                 br.changeColor(1, "GREEN");
-                difficultyLevel.level = 1;
+                difficultyLevel.setLevel(1);
                 Intent intent = new Intent(getApplicationContext(), InGame.class);
                 intent.putExtra("Level", difficultyLevel);
                 startActivity(intent);
@@ -65,7 +65,7 @@ public class selectlevel extends AppCompatActivity {
                 // action of level2 button
                 br.changeColor(2, "GREEN");
                 Intent intent = new Intent(getApplicationContext(), InGame.class);
-                difficultyLevel.level = 2;
+                difficultyLevel.setLevel(2);
                 intent.putExtra("Level", difficultyLevel);
                 startActivity(intent);
             }
@@ -77,7 +77,7 @@ public class selectlevel extends AppCompatActivity {
                 // action of level3 button
                 br.changeColor(3, "GREEN");
                 Intent intent = new Intent(getApplicationContext(), InGame.class);
-                difficultyLevel.level = 3;
+                difficultyLevel.setLevel(3);
                 intent.putExtra("Level", difficultyLevel);
                 startActivity(intent);
             }
@@ -89,7 +89,7 @@ public class selectlevel extends AppCompatActivity {
                 // action of level4 button
                 br.changeColor(4, "GREEN");
                 Intent intent = new Intent(getApplicationContext(), InGame.class);
-                difficultyLevel.level = 4;
+                difficultyLevel.setLevel(4);
                 intent.putExtra("Level", difficultyLevel);
                 startActivity(intent);
             }
@@ -101,7 +101,7 @@ public class selectlevel extends AppCompatActivity {
                 // action of level5 button
                 br.changeColor(5, "GREEN");
                 Intent intent = new Intent(getApplicationContext(), InGame.class);
-                difficultyLevel.level = 5;
+                difficultyLevel.setLevel(5);
                 intent.putExtra("Level", difficultyLevel);
                 startActivity(intent);
             }
@@ -113,7 +113,7 @@ public class selectlevel extends AppCompatActivity {
                 // action of level6 button
                 br.changeColor(6, "GREEN");
                 Intent intent = new Intent(getApplicationContext(), InGame.class);
-                difficultyLevel.level = 6;
+                difficultyLevel.setLevel(6);
                 intent.putExtra("Level", difficultyLevel);
                 startActivity(intent);
             }
@@ -125,7 +125,7 @@ public class selectlevel extends AppCompatActivity {
                 // action of level7 button
                 br.changeColor(7, "GREEN");
                 Intent intent = new Intent(getApplicationContext(), InGame.class);
-                difficultyLevel.level = 7;
+                difficultyLevel.setLevel(7);
                 intent.putExtra("Level", difficultyLevel);
                 startActivity(intent);
             }
