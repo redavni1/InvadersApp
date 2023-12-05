@@ -256,6 +256,7 @@ public class InGame extends AppCompatActivity {
         else {
             leftIcon.setEnabled(false);
             rightIcon.setEnabled(false);
+            shootBtn.setEnabled(false);
             leftIcon.setImageResource(R.drawable.left_disable);
             rightIcon.setImageResource(R.drawable.right_disable);
             shootBtn.setTextColor(Color.GRAY);
@@ -269,6 +270,7 @@ public class InGame extends AppCompatActivity {
         public void run() {
             leftIcon.setEnabled(true);
             rightIcon.setEnabled(true);
+            shootBtn.setEnabled(true);
             leftIcon.setImageResource(R.drawable.left_button);
             rightIcon.setImageResource(R.drawable.right_button);
             shootBtn.setTextColor(Color.WHITE);
@@ -282,6 +284,7 @@ public class InGame extends AppCompatActivity {
         runnableMap.get(bullet1).removeRunnable();
         runnableMap.get(bullet2).removeRunnable();
         handlerEnemyBullet.removeCallbacks(enemyBulletRunnable);
+        handlerShooting.removeCallbacks(shootingCoolDown);
         shootBtn.setTextColor(Color.GRAY);
         shootBtn.setEnabled(false);
         leftIcon.setEnabled(false);

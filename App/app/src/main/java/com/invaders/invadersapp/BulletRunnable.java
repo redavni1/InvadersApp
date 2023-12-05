@@ -2,6 +2,7 @@ package com.invaders.invadersapp;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.ImageView;
 
 
@@ -47,12 +48,14 @@ public class BulletRunnable extends InGame implements Runnable {
                 if (x+loadedBullet.getWidth() > enemy.getPositionSides()[0] && x < enemy.getPositionSides()[1] && y < enemy.getPositionTopBottom()[1]) {
                     enemyFormation.removeEnemy(enemy, i);
                     enemy.destroy();
-                    if (enemyFormation.noEnemies()) nextLevel();
                     return true;
                 }
             }
         }
         return false;
     }
-    public void removeRunnable() { handlerBullet.removeCallbacks(this); }
+    public void removeRunnable() {
+        handlerBullet.removeCallbacks(this);
+        loadedBullet.setVisibility(View.GONE);
+    }
 }
