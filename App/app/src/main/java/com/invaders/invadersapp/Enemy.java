@@ -32,7 +32,7 @@ public class Enemy extends InGame {
         enemy.setX(positionX);
         enemy.setY(positionY);
         enemy.setVisibility(View.VISIBLE);
-        //handlerMoving.post(movingRunnable);
+        handlerMoving.postDelayed(movingRunnable, 1500);
     }
     public float[] getPositionSides() { return new float[]{ positionX, positionX + enemy.getWidth() }; }
     public float[] getPositionTopBottom() { return new float[]{ positionY, positionY + enemy.getHeight() }; }
@@ -47,11 +47,11 @@ public class Enemy extends InGame {
     private Runnable movingRunnable = new Runnable() {
         @Override
         public void run() {
-            enemy.setX(enemy.getX()+distanceX);
-            enemy.setY(enemy.getY()+distanceY);
+//            enemy.setX(enemy.getX()+distanceX);
+//            enemy.setY(enemy.getY()+distanceY);
             enemy.setImageResource(drawables.getFirst());
             drawables.add(drawables.poll());
-            handlerMoving.postDelayed(this, 1000);
+            handlerMoving.postDelayed(this, 1500);
         }
     };
 
