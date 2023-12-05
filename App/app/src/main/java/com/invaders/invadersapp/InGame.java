@@ -80,7 +80,7 @@ public class InGame extends AppCompatActivity {
         difficultyLevel.getContext(this);
         setEnemiesByLevel();
 
-        handlerEnemyShooting.postDelayed(enemyShootingRunnable, 5000);
+        handlerEnemyShooting.postDelayed(enemyShootingRunnable, 3000);
 
 
 
@@ -196,7 +196,7 @@ public class InGame extends AppCompatActivity {
             enemyBullet.setY(shooter.getPositionTopBottom()[1]);
             enemyBullet.setVisibility(View.VISIBLE);
             handlerEnemyBullet.post(enemyBulletRunnable);
-            handlerEnemyShooting.postDelayed(this, 5000); // Cool down = 5 sec
+            handlerEnemyShooting.postDelayed(this, 3000); // Cool down = 3 sec
         }
     };
 
