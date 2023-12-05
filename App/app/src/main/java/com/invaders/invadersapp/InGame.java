@@ -48,6 +48,9 @@ public class InGame extends AppCompatActivity {
     private ImageView loadedBullet;
     private EnemyFormation enemyFormation;
     private ImageView enemyBullet;
+    private int remainLives = 3;
+    private TextView livesTextView;
+    private ImageView[] lifeIcons;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +59,15 @@ public class InGame extends AppCompatActivity {
 
         intent = getIntent();
         difficultyLevel = (DifficultyLevel) intent.getSerializableExtra("Level", DifficultyLevel.class);
+
+        livesTextView = (TextView) findViewById(R.id.livesText);
+        livesTextView.setTextColor(Color.WHITE);
+        livesTextView.setText(remainLives+"");
+        lifeIcons = new ImageView[] {
+                (ImageView) findViewById(R.id.life1),
+                (ImageView) findViewById(R.id.life2),
+                (ImageView) findViewById(R.id.life3)
+        };
 
         leftIcon = (ImageView) findViewById(R.id.left_icon);
         rightIcon = (ImageView) findViewById(R.id.right_icon);
@@ -211,10 +223,7 @@ public class InGame extends AppCompatActivity {
                 handlerEnemyBullet.removeCallbacks(this);
             } else if (checkShipDestruction()) {
                 enemyBullet.setVisibility(View.GONE);
-                leftIcon.setEnabled(false);
-                rightIcon.setEnabled(false);
-                ship.setImageResource(R.drawable.ship_destroyed);
-                shipDestructionHandler.postDelayed(shipDestructionRunnable, 1500); // destruction cool down = 1.5 sec
+                destroyShip();
                 handlerEnemyBullet.removeCallbacks(this);
             } else {
                 handlerEnemyBullet.postDelayed(this, 17); // fps = 1000/17
@@ -228,6 +237,16 @@ public class InGame extends AppCompatActivity {
             return true;
         return false;
     }
+    private void destroyShip() {
+        remainLives--;
+        livesTextView.setText(remainLives+"");
+        lifeIcons[remainLives].setVisibility(View.GONE);
+        leftIcon.setEnabled(false);
+        rightIcon.setEnabled(false);
+        ship.setImageResource(R.drawable.ship_destroyed);
+        shipDestructionHandler.postDelayed(shipDestructionRunnable, 1500); // destruction cool down = 1.5 sec
+        if (checkGameOver()) gameOver();
+    }
     private Handler shipDestructionHandler = new Handler(Looper.getMainLooper());
     private Runnable shipDestructionRunnable = new Runnable() {
         @Override
@@ -238,4 +257,6 @@ public class InGame extends AppCompatActivity {
             shipDestructionHandler.removeCallbacks(this);
         }
     };
+    private boolean checkGameOver() { return remainLives == 0; }
+    private void gameOver() {}
 }

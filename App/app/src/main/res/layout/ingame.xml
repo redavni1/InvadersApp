@@ -6,19 +6,68 @@
              android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/life1"
+        android:layout_width="30dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/topseparator"
+        app:layout_constraintStart_toEndOf="@+id/livesText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.53"
+        app:srcCompat="@drawable/ship" />
+
+    <ImageView
+        android:id="@+id/life2"
+        android:layout_width="30dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/topseparator"
+        app:layout_constraintStart_toEndOf="@+id/life1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.527"
+        app:srcCompat="@drawable/ship" />
+
+    <ImageView
+        android:id="@+id/life3"
+        android:layout_width="30dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/topseparator"
+        app:layout_constraintStart_toEndOf="@+id/life2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.527"
+        app:srcCompat="@drawable/ship" />
+
+    <ImageView
         android:id="@+id/topseparator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/separator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.1"
+        app:srcCompat="@drawable/separator" />
+
+    <TextView
+        android:id="@+id/livesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/blackopsone"
+        android:text="3"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/topseparator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
 
     <ImageView
-        android:id="@+id/botsparator"
+        android:id="@+id/botseparator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/separator"
@@ -55,7 +104,7 @@
         android:id="@+id/ship"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/botseperator"
+        app:layout_constraintBottom_toTopOf="@+id/botseparator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -71,7 +120,7 @@
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/botseperator" />
+        app:layout_constraintTop_toBottomOf="@+id/botseparator" />
 
     <ImageView
         android:id="@+id/bullet1"
