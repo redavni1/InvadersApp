@@ -67,11 +67,18 @@ public class ItemStore extends AppCompatActivity {
      * Updates the UI to reflect changes in item quantities and coin balance.
      */
     private void update_UI() {
-        // Reflect changes in the adapter
-        itemAdapter.notifyDataSetChanged();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Reflect changes in the adapter
+                itemAdapter.notifyDataSetChanged();
+                TextView coinTextView = findViewById(R.id.item_coin);
+                if (coinTextView != null) {
+                    // Update the coin quantity TextView
+                    coinTextView.setText(String.valueOf(coinQuantity));
+                }
+            }
+        });
 
-        // Update the coin quantity TextView
-        TextView coinTextView = findViewById(R.id.item_coin);
-        coinTextView.setText((String.valueOf(coinQuantity)));
     }
 }
