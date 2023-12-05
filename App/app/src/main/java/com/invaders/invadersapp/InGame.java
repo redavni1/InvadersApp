@@ -203,11 +203,6 @@ public class InGame extends AppCompatActivity {
             }
         }
     }
-    public void nextLevel() {
-        handlerEnemyShooting.removeCallbacks(enemyShootingRunnable);
-        difficultyLevel.nextLevel();
-        setEnemiesByLevel();
-    }
     private Handler handlerEnemyShooting = new Handler(Looper.getMainLooper());
     private Runnable enemyShootingRunnable = new Runnable() {
         @Override
@@ -279,12 +274,17 @@ public class InGame extends AppCompatActivity {
         }
     };
     private boolean checkNoLives() { return remainLives == 0; }
-    private void gameOver() {
+    public boolean enemyFormationIsEmpty() {
+        return enemyFormation.noEnemies();
+    }
+    public void gameOver() {
         handlerEnemyShooting.removeCallbacks(enemyShootingRunnable);
         runnableMap.get(bullet1).removeRunnable();
         runnableMap.get(bullet2).removeRunnable();
         handlerEnemyBullet.removeCallbacks(enemyBulletRunnable);
+        enemyBullet.setVisibility(View.GONE);
         handlerShooting.removeCallbacks(shootingCoolDown);
+        shipDestructionHandler.removeCallbacks(shipDestructionRunnable);
         shootBtn.setTextColor(Color.GRAY);
         shootBtn.setEnabled(false);
         leftIcon.setEnabled(false);

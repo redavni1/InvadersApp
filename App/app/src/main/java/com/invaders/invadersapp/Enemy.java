@@ -40,6 +40,7 @@ public class Enemy extends InGame {
     public void destroy() {
         enemy.setVisibility(View.GONE);
         ((InGame) mContext).plusScore(score);
+        if (((InGame) mContext).enemyFormationIsEmpty()) ((InGame) mContext).gameOver();
     }
     public float distanceX = 200;
     public float distanceY = 0;
