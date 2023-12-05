@@ -211,6 +211,10 @@ public class InGame extends AppCompatActivity {
                 handlerEnemyBullet.removeCallbacks(this);
             } else if (checkShipDestruction()) {
                 enemyBullet.setVisibility(View.GONE);
+                leftIcon.setEnabled(false);
+                rightIcon.setEnabled(false);
+                ship.setImageResource(R.drawable.ship_destroyed);
+                shipDestructionHandler.postDelayed(shipDestructionRunnable, 1500); // destruction cool down = 1.5 sec
                 handlerEnemyBullet.removeCallbacks(this);
             } else {
                 handlerEnemyBullet.postDelayed(this, 17); // fps = 1000/17
@@ -224,4 +228,14 @@ public class InGame extends AppCompatActivity {
             return true;
         return false;
     }
+    private Handler shipDestructionHandler = new Handler(Looper.getMainLooper());
+    private Runnable shipDestructionRunnable = new Runnable() {
+        @Override
+        public void run() {
+            leftIcon.setEnabled(true);
+            rightIcon.setEnabled(true);
+            ship.setImageResource(R.drawable.ship);
+            shipDestructionHandler.removeCallbacks(this);
+        }
+    };
 }
