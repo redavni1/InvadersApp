@@ -1,3 +1,5 @@
+[![Android CI](https://github.com/redavni1/InvadersApp/actions/workflows/android.yml/badge.svg)](https://github.com/redavni1/InvadersApp/actions/workflows/android.yml)
+
 # Space Invaders
 
 > Course: Software Development Practices (CES2024) - Tuesday Class (23-2-24428)
