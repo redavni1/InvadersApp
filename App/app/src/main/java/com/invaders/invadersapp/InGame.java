@@ -80,6 +80,8 @@ public class InGame extends AppCompatActivity {
         difficultyLevel.getContext(this);
         setEnemiesByLevel();
 
+        handlerEnemyShooting.postDelayed(enemyShootingRunnable, 5000);
+
 
 
         bullet1 = (ImageView) findViewById(R.id.bullet1);
@@ -173,10 +175,10 @@ public class InGame extends AppCompatActivity {
 
     private void setEnemiesByLevel() {
         Enemy[][] tmpEnemies = difficultyLevel.setEnemies();
-        for (int i = 0; i < tmpEnemies[0].length; i++) {
+        for (int i = 0; i < tmpEnemies.length; i++) {
             enemyFormation.setNewEnemiesList();
-            for (int j = 0; j < tmpEnemies.length; j++) {
-                Enemy e = tmpEnemies[j][i];
+            for (int j = 0; j < tmpEnemies[0].length; j++) {
+                Enemy e = tmpEnemies[i][j];
                 e.setVisible();
                 enemyFormation.addEnemy(e, i);
             }
@@ -186,13 +188,6 @@ public class InGame extends AppCompatActivity {
         difficultyLevel.level += 1;
         setEnemiesByLevel();
     }
-    private Handler enemyCooldownHandler = new Handler(Looper.getMainLooper());
-    private Runnable enemyShootingCooldown = new Runnable() {
-        @Override
-        public void run() {
-            handlerEnemyShooting.postDelayed(enemyShootingRunnable, 5000);
-        }
-    };
     private Handler handlerEnemyShooting = new Handler(Looper.getMainLooper());
     private Runnable enemyShootingRunnable = new Runnable() {
         @Override
@@ -204,6 +199,7 @@ public class InGame extends AppCompatActivity {
             enemyBullet.setY(shooter.getPositionTopBottom()[1]);
             enemyBullet.setVisibility(View.VISIBLE);
             handlerEnemyBullet.post(enemyBulletRunnable);
+            handlerEnemyShooting.postDelayed(this, 5000); // Cool down = 5 sec
         }
     };
 

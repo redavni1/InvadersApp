@@ -2,11 +2,8 @@ package com.invaders.invadersapp;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class BulletRunnable extends InGame implements Runnable {
