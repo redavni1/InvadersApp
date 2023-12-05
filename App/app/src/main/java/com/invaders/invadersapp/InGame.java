@@ -191,7 +191,7 @@ public class InGame extends AppCompatActivity {
         public void run() {
             int shooterSetIdx = (int) Math.random() * enemyFormation.size();
             List<Enemy> shooterSet = enemyFormation.getOneList(shooterSetIdx);
-            Enemy shooter = shooterSet.get(shooterSet.size()-1);
+            Enemy shooter = shooterSet.get(0);
             enemyBullet.setX((shooter.getPositionSides()[0]+shooter.getPositionSides()[1])/2 - bulletWidth/2);
             enemyBullet.setY(shooter.getPositionTopBottom()[1]);
             enemyBullet.setVisibility(View.VISIBLE);
