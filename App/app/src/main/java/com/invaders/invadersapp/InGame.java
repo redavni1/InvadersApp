@@ -52,7 +52,8 @@ public class InGame extends AppCompatActivity {
     private TextView livesTextView;
     private ImageView[] lifeIcons;
     private TextView gameOverTextView;
-
+    private int score = 0;
+    private TextView scoreTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +66,9 @@ public class InGame extends AppCompatActivity {
         gameOverTextView = (TextView) findViewById(R.id.gameover);
         gameOverTextView.setVisibility(View.GONE);
         gameOverTextView.setTextColor(Color.WHITE);
+
+        scoreTextView = (TextView) findViewById(R.id.score);
+        scoreTextView.setText(score+"");
 
         livesTextView = (TextView) findViewById(R.id.livesText);
         livesTextView.setTextColor(Color.WHITE);
@@ -289,5 +293,9 @@ public class InGame extends AppCompatActivity {
             ship.setImageResource(R.drawable.ship_destroyed);
         }
         gameOverTextView.setVisibility(View.VISIBLE);
+    }
+    public void plusScore(int s) {
+        score += s;
+        scoreTextView.setText(score+"");
     }
 }

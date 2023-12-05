@@ -10,9 +10,9 @@ public class DifficultyLevel implements Serializable {
     private Enemy[][] enemiesFormation;
     Context mContext;
     private int[][] drawables = {
-            { R.drawable.enemyship_a1, R.drawable.enemyship_a2 },
-            { R.drawable.enemyship_b1, R.drawable.enemyship_b2 },
-            { R.drawable.enemyship_c1, R.drawable.enemyship_c2 }
+            { R.drawable.enemyship_a1, R.drawable.enemyship_a2 }, // score = 10
+            { R.drawable.enemyship_b1, R.drawable.enemyship_b2 }, // score = 20
+            { R.drawable.enemyship_c1, R.drawable.enemyship_c2 }  // score = 30
     };
     public void setLevel(int l) { level = l; }
     public int getLevel() { return level; }
@@ -39,7 +39,7 @@ public class DifficultyLevel implements Serializable {
         for (int i = 0; i < x; i++) {
             positionY = 600;
             for (int j = 0; j < y; j++) {
-                enemiesFormation[i][j] = new Enemy(mContext, R.id.enemy1 + num++, drawables[j][0], drawables[j][1], 504, positionY);
+                enemiesFormation[i][j] = new Enemy(mContext, R.id.enemy1 + num++, drawables[j][0], drawables[j][1], 504, positionY, (j+1)*10);
                 positionY -= 150;
             }
         }

@@ -7,18 +7,18 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.util.LinkedList;
-import java.util.logging.Logger;
 
 public class Enemy extends InGame {
     private ImageView enemy;
     private float positionX;
     private float positionY;
     private LinkedList<Integer> drawables;
-    Context mcontext;
+    private int score;
+    Context mContext;
 
-    public Enemy(Context context, int id, int d1, int d2, float x, float y) {
-        mcontext = context;
-        enemy = (ImageView) ((InGame) mcontext).findViewById(id);
+    public Enemy(Context context, int id, int d1, int d2, float x, float y, int s) {
+        mContext = context;
+        enemy = (ImageView) ((InGame) mContext).findViewById(id);
         drawables = new LinkedList<>();
         drawables.add(d1);
         drawables.add(d2);
@@ -26,6 +26,7 @@ public class Enemy extends InGame {
         drawables.add(drawables.poll());
         positionX = x;
         positionY = y;
+        score = s;
         enemy.setVisibility(View.GONE);
     }
     public void setVisible() {
@@ -37,9 +38,8 @@ public class Enemy extends InGame {
     public float[] getPositionSides() { return new float[]{ positionX, positionX + enemy.getWidth() }; }
     public float[] getPositionTopBottom() { return new float[]{ positionY, positionY + enemy.getHeight() }; }
     public void destroy() {
-        //handlerMoving.removeCallbacks(movingRunnable);
         enemy.setVisibility(View.GONE);
-
+        ((InGame) mContext).plusScore(score);
     }
     public float distanceX = 200;
     public float distanceY = 0;
@@ -55,5 +55,5 @@ public class Enemy extends InGame {
         }
     };
     public void stopMoving() { handlerMoving.removeCallbacks(movingRunnable); }
-
+    public int getScore() { return score; }
 }
