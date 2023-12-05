@@ -46,8 +46,8 @@ public class InGame extends AppCompatActivity {
     private Map<ImageView, BulletRunnable> runnableMap;
     /** Temporary ImageView for shot bullet. */
     private ImageView loadedBullet;
-    private Enemy enemy;
-    private List<Enemy> enemies;
+    private EnemyFormation enemyFormation;
+    private ImageView enemyBullet;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,13 +71,24 @@ public class InGame extends AppCompatActivity {
         // Initialize shoot button's color white.
         shootBtn.setTextColor(Color.WHITE);
 
+
+
+        enemyBullet = (ImageView) findViewById(R.id.enemybullet);
+        enemyBullet.setImageResource(R.drawable.enemybullet);
+        enemyBullet.setVisibility(View.GONE);
+        enemyFormation = new EnemyFormation();
+        difficultyLevel.getContext(this);
+        setEnemiesByLevel();
+
+
+
         bullet1 = (ImageView) findViewById(R.id.bullet1);
         bullet2 = (ImageView) findViewById(R.id.bullet2);
 
         // Initialize runnableMap for linking bullet ImageView and their runnable.
         runnableMap = new HashMap<ImageView, BulletRunnable>() {{
-            put(bullet1, new BulletRunnable(bullet1));
-            put(bullet2, new BulletRunnable(bullet2));
+            put(bullet1, new BulletRunnable(bullet1, enemyFormation));
+            put(bullet2, new BulletRunnable(bullet2, enemyFormation));
         }};
         // Add bullets into their LinkedList for reusing.
         bullets.add(bullet1);
@@ -85,8 +96,6 @@ public class InGame extends AppCompatActivity {
 
 
 
-        difficultyLevel.getContext(this);
-        setEnemiesByLevel();
 
 
         leftIcon.setOnTouchListener(new View.OnTouchListener() {
@@ -131,6 +140,7 @@ public class InGame extends AppCompatActivity {
 
                 // Load bullet that is head of the list.
                 loadedBullet = bullets.poll();
+
                 // Set loaded bullet's image resource.
                 loadedBullet.setImageResource(R.drawable.bullet);
                 // Change shootbtn's color gray and Set it disable.
@@ -140,7 +150,6 @@ public class InGame extends AppCompatActivity {
                 loadedBullet.setX(ship.getX() + ((float) ship.getWidth() - bulletWidth)/2);
                 loadedBullet.setY(ship.getY());
                 // Run loaded bullet's runnable for shooting.
-                runnableMap.get(loadedBullet).setEnemyList(enemies);
                 runnableMap.get(loadedBullet).run();
                 // Add bullet to last of the list.
                 bullets.add(loadedBullet);
@@ -163,12 +172,13 @@ public class InGame extends AppCompatActivity {
     };
 
     private void setEnemiesByLevel() {
-        enemies = new ArrayList<>();
         Enemy[][] tmpEnemies = difficultyLevel.setEnemies();
-        for (int i = 0; i < tmpEnemies.length; i++) {
-            for (int j = 0; j < tmpEnemies[0].length; j++) {
-                tmpEnemies[i][j].setVisible();
-                enemies.add(tmpEnemies[i][j]);
+        for (int i = 0; i < tmpEnemies[0].length; i++) {
+            enemyFormation.setNewEnemiesList();
+            for (int j = 0; j < tmpEnemies.length; j++) {
+                Enemy e = tmpEnemies[j][i];
+                e.setVisible();
+                enemyFormation.addEnemy(e, i);
             }
         }
     }
@@ -176,4 +186,42 @@ public class InGame extends AppCompatActivity {
         difficultyLevel.level += 1;
         setEnemiesByLevel();
     }
+    private Handler enemyCooldownHandler = new Handler(Looper.getMainLooper());
+    private Runnable enemyShootingCooldown = new Runnable() {
+        @Override
+        public void run() {
+            handlerEnemyShooting.postDelayed(enemyShootingRunnable, 5000);
+        }
+    };
+    private Handler handlerEnemyShooting = new Handler(Looper.getMainLooper());
+    private Runnable enemyShootingRunnable = new Runnable() {
+        @Override
+        public void run() {
+            int shooterSetIdx = (int) Math.random() * enemyFormation.size();
+            List<Enemy> shooterSet = enemyFormation.getOneList(shooterSetIdx);
+            Enemy shooter = shooterSet.get(shooterSet.size()-1);
+            enemyBullet.setX((shooter.getPositionSides()[0]+shooter.getPositionSides()[1])/2 - bulletWidth/2);
+            enemyBullet.setY(shooter.getPositionTopBottom()[1]);
+            enemyBullet.setVisibility(View.VISIBLE);
+            handlerEnemyBullet.post(enemyBulletRunnable);
+        }
+    };
+
+
+    public Handler handlerEnemyBullet = new Handler(Looper.getMainLooper());
+    private Runnable enemyBulletRunnable = new Runnable() {
+        @Override
+        public void run() {
+            enemyBullet.setY(enemyBullet.getY()+16);
+            if(enemyBullet.getY() + enemyBullet.getHeight() > ship.getY()+ship.getHeight()) {
+                enemyBullet.setVisibility(View.GONE);
+                handlerEnemyBullet.removeCallbacks(this);
+//            } else if (checkCollision()) {
+//                loadedBullet.setImageResource(0);
+//                handlerBullet.removeCallbacks(this);
+            } else {
+                handlerEnemyBullet.postDelayed(this, 17); // fps = 1000/17
+            }
+        }
+    };
 }

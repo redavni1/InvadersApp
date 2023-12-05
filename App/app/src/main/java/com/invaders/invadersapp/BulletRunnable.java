@@ -2,8 +2,10 @@ package com.invaders.invadersapp;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -12,16 +14,18 @@ public class BulletRunnable extends InGame implements Runnable {
     private Handler handlerBullet = new Handler(Looper.getMainLooper());
     /** ImageView of loaded bullet */
     private ImageView loadedBullet;
-    private List<Enemy> enemyList;
+    private EnemyFormation enemyFormation;
+
 
     /**
      * Initialize b's BulletRunnable.
      *
      * @param b Loaded bullet.
      */
-    public BulletRunnable(ImageView b) {
+    public BulletRunnable(ImageView b, EnemyFormation e) {
         // Set parameter to loadedBullet.
         loadedBullet = b;
+        enemyFormation = e;
     }
     /** Start run to shoot bullet. */
     @Override
@@ -37,18 +41,17 @@ public class BulletRunnable extends InGame implements Runnable {
             handlerBullet.postDelayed(this, 17); // fps = 1000/17
         }
     }
-    public void setEnemyList(List<Enemy> list) {
-        enemyList = list;
-    }
 
     private boolean checkCollision() {
         float x = loadedBullet.getX();
         float y = loadedBullet.getY();
-        for (Enemy enemy : enemyList) {
-            if (x > enemy.getPositionSides()[0] && x < enemy.getPositionSides()[1] && y < enemy.getPositionBottom()) {
-                enemyList.remove(enemy);
-                enemy.destroy();
-                return true;
+        for (int i=0; i<enemyFormation.size(); i++) {
+            for (Enemy enemy : enemyFormation.getOneList(i)) {
+                if (x > enemy.getPositionSides()[0] && x < enemy.getPositionSides()[1] && y < enemy.getPositionTopBottom()[1]) {
+                    enemyFormation.removeEnemy(enemy, i);
+                    enemy.destroy();
+                    return true;
+                }
             }
         }
         return false;
