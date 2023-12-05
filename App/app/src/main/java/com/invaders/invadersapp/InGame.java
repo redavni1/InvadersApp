@@ -26,13 +26,13 @@ public class InGame extends AppCompatActivity {
 
 
     /** ImageView of ship. */
-    private ImageView ship;
+    private ImageView shipImageView;
     /** ImageView of left icon. */
-    private ImageView leftIcon;
+    private ImageView leftIconImageView;
     /** ImageView of right icon. */
-    private ImageView rightIcon;
+    private ImageView rightIconImageView;
     /** TextView of "S H O O T" button. */
-    private TextView shootBtn;
+    private TextView shootBtnTextView;
     /** LinkedList for reusing bullets. */
     private LinkedList<ImageView> bullets = new LinkedList<>();
     /** ImageView of bullet1, 2. */
@@ -50,8 +50,39 @@ public class InGame extends AppCompatActivity {
     private TextView livesTextView;
     private ImageView[] lifeIcons;
     private TextView gameOverTextView;
-    private int score = 0;
     private TextView scoreTextView;
+    private int score = 0;
+
+
+    private void setGameOverTextView() {
+        gameOverTextView = (TextView) findViewById(R.id.gameover);
+        gameOverTextView.setVisibility(View.GONE);
+    }
+    private void setScoreTextView() {
+        scoreTextView = (TextView) findViewById(R.id.score);
+        scoreTextView.setText(score+"");
+    }
+    private void setLives() {
+        livesTextView = (TextView) findViewById(R.id.livesText);
+        livesTextView.setText(remainLives+"");
+        lifeIcons = new ImageView[] {
+                (ImageView) findViewById(R.id.life1),
+                (ImageView) findViewById(R.id.life2),
+                (ImageView) findViewById(R.id.life3)
+        };
+    }
+    private void setDirectionIcons() {
+        leftIconImageView = (ImageView) findViewById(R.id.left_icon);
+        rightIconImageView = (ImageView) findViewById(R.id.right_icon);
+        leftIconImageView.setImageResource(R.drawable.left_button);
+        rightIconImageView.setImageResource(R.drawable.right_button);
+    }
+    private void setEnemyBullet() {
+        enemyBullet = (ImageView) findViewById(R.id.enemybullet);
+        enemyBullet.setImageResource(R.drawable.enemybullet);
+        enemyBullet.setVisibility(View.GONE);
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,53 +92,28 @@ public class InGame extends AppCompatActivity {
         intent = getIntent();
         difficultyLevel = (DifficultyLevel) intent.getSerializableExtra("Level", DifficultyLevel.class);
 
-        gameOverTextView = (TextView) findViewById(R.id.gameover);
-        gameOverTextView.setVisibility(View.GONE);
-        gameOverTextView.setTextColor(Color.WHITE);
+        setGameOverTextView();
+        setScoreTextView();
+        setLives();
+        setDirectionIcons();
+        shipImageView = (ImageView) findViewById(R.id.ship);
+        shootBtnTextView = (TextView) findViewById(R.id.shoot);
 
-        scoreTextView = (TextView) findViewById(R.id.score);
-        scoreTextView.setText(score+"");
-
-        livesTextView = (TextView) findViewById(R.id.livesText);
-        livesTextView.setTextColor(Color.WHITE);
-        livesTextView.setText(remainLives+"");
-        lifeIcons = new ImageView[] {
-                (ImageView) findViewById(R.id.life1),
-                (ImageView) findViewById(R.id.life2),
-                (ImageView) findViewById(R.id.life3)
-        };
-
-        leftIcon = (ImageView) findViewById(R.id.left_icon);
-        rightIcon = (ImageView) findViewById(R.id.right_icon);
-        leftIcon.setImageResource(R.drawable.left_button);
-        rightIcon.setImageResource(R.drawable.right_button);
-
-        ship = (ImageView) findViewById(R.id.ship);
         // Initialize direction icons' runnable.
-        MovingRunnable movingLeft = new MovingRunnable(leftIcon, ship);
-        MovingRunnable movingRight = new MovingRunnable(rightIcon, ship);
+        MovingRunnable movingLeft = new MovingRunnable(leftIconImageView, shipImageView);
+        MovingRunnable movingRight = new MovingRunnable(rightIconImageView, shipImageView);
 
-        shootBtn = (TextView) findViewById(R.id.shoot);
-        // Initialize shoot button's color white.
-        shootBtn.setTextColor(Color.WHITE);
+        setEnemyBullet();
 
-
-
-        enemyBullet = (ImageView) findViewById(R.id.enemybullet);
-        enemyBullet.setImageResource(R.drawable.enemybullet);
-        enemyBullet.setVisibility(View.GONE);
         enemyFormation = new EnemyFormation();
         difficultyLevel.getContext(this);
         setEnemiesByLevel();
-
         selectEnemyShooterHandler.postDelayed(selectEnemyShooterRunnable, 3000);
-
-
 
         bullet1 = (ImageView) findViewById(R.id.bullet1);
         bullet2 = (ImageView) findViewById(R.id.bullet2);
 
-        // Initialize runnableMap for linking bullet ImageView and their runnable.
+        // Initialize bulletRunnableMap for linking bullet ImageView and their runnable.
         bulletRunnableMap = new HashMap<ImageView, BulletRunnable>() {{
             put(bullet1, new BulletRunnable(bullet1, enemyFormation));
             put(bullet2, new BulletRunnable(bullet2, enemyFormation));
@@ -120,41 +126,41 @@ public class InGame extends AppCompatActivity {
 
 
 
-        leftIcon.setOnTouchListener(new View.OnTouchListener() {
+        leftIconImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // Change left button's color green and ship's position to left when it touched.
-                    leftIcon.setImageResource(R.drawable.left_touched);
+                    leftIconImageView.setImageResource(R.drawable.left_touched);
                     movingLeft.movingHandler.post(movingLeft);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     // Change left button's color white and Stop ship's moving when it stops being touched.
-                    leftIcon.setImageResource(R.drawable.left_button);
+                    leftIconImageView.setImageResource(R.drawable.left_button);
                     movingLeft.movingHandler.removeCallbacks(movingLeft);
                 }
                 return true;
             }
         });
 
-        rightIcon.setOnTouchListener(new View.OnTouchListener() {
+        rightIconImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // Change right button's color green and ship's position to right when it touched.
-                    rightIcon.setImageResource(R.drawable.right_touched);
+                    rightIconImageView.setImageResource(R.drawable.right_touched);
                     movingRight.movingHandler.post(movingRight);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     // Change left button's color white and Stop ship's moving when it stops being touched.
-                    rightIcon.setImageResource(R.drawable.right_button);
+                    rightIconImageView.setImageResource(R.drawable.right_button);
                     movingRight.movingHandler.removeCallbacks(movingRight);
                 }
                 return true;
             }
         });
 
-        shootBtn.setOnClickListener(new View.OnClickListener() {
+        shootBtnTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Load bullet that is head of the list.
@@ -162,11 +168,11 @@ public class InGame extends AppCompatActivity {
                 // Set loaded bullet's image resource.
                 loadedBullet.setImageResource(R.drawable.bullet);
                 // Change shootbtn's color gray and Set it disable.
-                shootBtn.setTextColor(Color.GRAY);
-                shootBtn.setEnabled(false);
+                shootBtnTextView.setTextColor(Color.GRAY);
+                shootBtnTextView.setEnabled(false);
                 // Initialize loaded bullet's position.
-                loadedBullet.setX(ship.getX() + ((float) ship.getWidth() - bulletWidth)/2);
-                loadedBullet.setY(ship.getY());
+                loadedBullet.setX(shipImageView.getX() + ((float) shipImageView.getWidth() - bulletWidth)/2);
+                loadedBullet.setY(shipImageView.getY());
                 // Run loaded bullet's runnable for shooting.
                 bulletRunnableMap.get(loadedBullet).run();
                 // Add bullet to last of the list.
@@ -194,8 +200,8 @@ public class InGame extends AppCompatActivity {
         @Override
         public void run() {
             // Set shootbtn's color white and Set it enable.
-            shootBtn.setTextColor(Color.WHITE);
-            shootBtn.setEnabled(true);
+            shootBtnTextView.setTextColor(Color.WHITE);
+            shootBtnTextView.setEnabled(true);
             shootingCooldownHandler.removeCallbacks(shootingCoolDownRunnable);
         }
     };
@@ -220,7 +226,7 @@ public class InGame extends AppCompatActivity {
         @Override
         public void run() {
             enemyBullet.setY(enemyBullet.getY()+16);
-            if(enemyBullet.getY() + enemyBullet.getHeight() > ship.getY()+ship.getHeight()) {
+            if(enemyBullet.getY() + enemyBullet.getHeight() > shipImageView.getY()+ shipImageView.getHeight()) {
                 enemyBullet.setVisibility(View.GONE);
                 enemyBulletHandler.removeCallbacks(this);
             } else if (checkShipDestruction()) {
@@ -235,7 +241,7 @@ public class InGame extends AppCompatActivity {
     private boolean checkShipDestruction() {
         float x = enemyBullet.getX();
         float y = enemyBullet.getY()+enemyBullet.getHeight();
-        if (x+bulletWidth > ship.getX() && x < ship.getX()+ship.getWidth() && y > ship.getY())
+        if (x+bulletWidth > shipImageView.getX() && x < shipImageView.getX()+ shipImageView.getWidth() && y > shipImageView.getY())
             return true;
         return false;
     }
@@ -245,13 +251,13 @@ public class InGame extends AppCompatActivity {
         lifeIcons[remainLives].setVisibility(View.GONE);
         if (checkNoLives()) gameOver();
         else {
-            leftIcon.setEnabled(false);
-            rightIcon.setEnabled(false);
-            shootBtn.setEnabled(false);
-            leftIcon.setImageResource(R.drawable.left_disable);
-            rightIcon.setImageResource(R.drawable.right_disable);
-            shootBtn.setTextColor(Color.GRAY);
-            ship.setImageResource(R.drawable.ship_destroyed);
+            leftIconImageView.setEnabled(false);
+            rightIconImageView.setEnabled(false);
+            shootBtnTextView.setEnabled(false);
+            leftIconImageView.setImageResource(R.drawable.left_disable);
+            rightIconImageView.setImageResource(R.drawable.right_disable);
+            shootBtnTextView.setTextColor(Color.GRAY);
+            shipImageView.setImageResource(R.drawable.ship_destroyed);
             destroyShipHandler.postDelayed(destroyShipRunnable, 1500); // destruction cool down = 1.5 sec
         }
     }
@@ -259,13 +265,13 @@ public class InGame extends AppCompatActivity {
     private Runnable destroyShipRunnable = new Runnable() {
         @Override
         public void run() {
-            leftIcon.setEnabled(true);
-            rightIcon.setEnabled(true);
-            shootBtn.setEnabled(true);
-            leftIcon.setImageResource(R.drawable.left_button);
-            rightIcon.setImageResource(R.drawable.right_button);
-            shootBtn.setTextColor(Color.WHITE);
-            ship.setImageResource(R.drawable.ship);
+            leftIconImageView.setEnabled(true);
+            rightIconImageView.setEnabled(true);
+            shootBtnTextView.setEnabled(true);
+            leftIconImageView.setImageResource(R.drawable.left_button);
+            rightIconImageView.setImageResource(R.drawable.right_button);
+            shootBtnTextView.setTextColor(Color.WHITE);
+            shipImageView.setImageResource(R.drawable.ship);
             destroyShipHandler.removeCallbacks(this);
         }
     };
@@ -281,15 +287,15 @@ public class InGame extends AppCompatActivity {
         enemyBullet.setVisibility(View.GONE);
         shootingCooldownHandler.removeCallbacks(shootingCoolDownRunnable);
         destroyShipHandler.removeCallbacks(destroyShipRunnable);
-        shootBtn.setTextColor(Color.GRAY);
-        shootBtn.setEnabled(false);
-        leftIcon.setEnabled(false);
-        rightIcon.setEnabled(false);
-        leftIcon.setImageResource(R.drawable.left_disable);
-        rightIcon.setImageResource(R.drawable.right_disable);
+        shootBtnTextView.setTextColor(Color.GRAY);
+        shootBtnTextView.setEnabled(false);
+        leftIconImageView.setEnabled(false);
+        rightIconImageView.setEnabled(false);
+        leftIconImageView.setImageResource(R.drawable.left_disable);
+        rightIconImageView.setImageResource(R.drawable.right_disable);
         if (!enemyFormation.noEnemies()) {
             enemyFormation.stopEnemiesMoving();
-            ship.setImageResource(R.drawable.ship_destroyed);
+            shipImageView.setImageResource(R.drawable.ship_destroyed);
         }
         gameOverTextView.setVisibility(View.VISIBLE);
     }

@@ -56,6 +56,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/blackopsone"
         android:text="3"
+        android:textColor="#FFFFFF"
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/topseparator"
         app:layout_constraintEnd_toEndOf="parent"
@@ -129,6 +130,7 @@
         android:fontFamily="@font/blackopsone"
         android:text="S H O O T"
         android:textSize="30dp"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/botseparator" />
@@ -174,6 +176,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/blackopsone"
         android:text="G A M E O V E R"
+        android:textColor="#FFFFFF"
         android:textSize="43dp"
         app:layout_constraintBottom_toTopOf="@+id/botseparator"
         app:layout_constraintEnd_toEndOf="parent"
