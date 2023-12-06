@@ -33,7 +33,7 @@ public class BulletRunnable extends InGame implements Runnable {
             loadedBullet.setVisibility(View.GONE);
             handlerBullet.removeCallbacks(this);
         } else if (checkCollision()) {
-            loadedBullet.setImageResource(0);
+            loadedBullet.setVisibility(View.GONE);
             handlerBullet.removeCallbacks(this);
         } else {
             handlerBullet.postDelayed(this, 17); // fps = 1000/17
