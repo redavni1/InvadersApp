@@ -29,7 +29,7 @@ public class BulletRunnable extends InGame implements Runnable {
     @Override
     public void run() {
         loadedBullet.setY(loadedBullet.getY()-16);
-        if(loadedBullet.getY() < 0) {
+        if(loadedBullet.getY() < 200) {
             loadedBullet.setVisibility(View.GONE);
             handlerBullet.removeCallbacks(this);
         } else if (checkCollision()) {
