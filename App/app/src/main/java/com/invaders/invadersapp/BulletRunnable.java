@@ -30,7 +30,7 @@ public class BulletRunnable extends InGame implements Runnable {
     public void run() {
         loadedBullet.setY(loadedBullet.getY()-16);
         if(loadedBullet.getY() < 0) {
-            loadedBullet.setImageResource(0);
+            loadedBullet.setVisibility(View.GONE);
             handlerBullet.removeCallbacks(this);
         } else if (checkCollision()) {
             loadedBullet.setImageResource(0);

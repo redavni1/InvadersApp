@@ -112,6 +112,8 @@ public class InGame extends AppCompatActivity {
 
         bullet1 = (ImageView) findViewById(R.id.bullet1);
         bullet2 = (ImageView) findViewById(R.id.bullet2);
+        bullet1.setVisibility(View.GONE);
+        bullet2.setVisibility(View.GONE);
 
         // Initialize bulletRunnableMap for linking bullet ImageView and their runnable.
         bulletRunnableMap = new HashMap<ImageView, BulletRunnable>() {{
@@ -166,7 +168,7 @@ public class InGame extends AppCompatActivity {
                 // Load bullet that is head of the list.
                 loadedBullet = bullets.poll();
                 // Set loaded bullet's image resource.
-                loadedBullet.setImageResource(R.drawable.bullet);
+                loadedBullet.setVisibility(View.VISIBLE);
                 // Change shootbtn's color gray and Set it disable.
                 shootBtnTextView.setTextColor(Color.GRAY);
                 shootBtnTextView.setEnabled(false);
