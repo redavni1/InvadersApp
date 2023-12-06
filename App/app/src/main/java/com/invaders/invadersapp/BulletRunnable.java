@@ -2,6 +2,7 @@ package com.invaders.invadersapp;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.ImageView;
 
 
@@ -26,7 +27,7 @@ public class BulletRunnable implements Runnable {
     public void run() {
         loadedBullet.setY(loadedBullet.getY()-16);
         if(loadedBullet.getY() < 0) {
-            loadedBullet.setImageResource(0);
+            loadedBullet.setVisibility(View.GONE);
             handlerBullet.removeCallbacks(this);
         } else {
             handlerBullet.postDelayed(this, 17); // fps = 1000/17
