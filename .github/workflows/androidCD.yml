@@ -28,7 +28,7 @@ jobs:
     - name: Build release universal apk
       run: |
         cd App 
-        ./gradlew presentation:packageReleaseUniversalApk
+        ./gradlew assembleRelease
 
     - name: Upload apk to Firebase App Distribution
       uses: wzieba/Firebase-Distribution-Github-Action@v1
