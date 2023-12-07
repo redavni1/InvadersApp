@@ -53,4 +53,8 @@ public class BulletRunnable extends InGame implements Runnable {
         }
         return false;
     }
+    public void stop() {
+        loadedBullet.setVisibility(View.GONE);
+        bulletHandler.removeCallbacks(this);
+    }
 }

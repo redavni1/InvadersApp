@@ -136,12 +136,12 @@ public class InGame extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // Change left button's color green and ship's position to left when it touched.
                     leftIconImageView.setImageResource(R.drawable.left_touched);
-                    inGameHandler.post(movingLeft);
+                    movingLeft.run();
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     // Change left button's color white and Stop ship's moving when it stops being touched.
                     leftIconImageView.setImageResource(R.drawable.left_button);
-                    inGameHandler.removeCallbacks(movingLeft);
+                    movingLeft.stop();
                 }
                 return true;
             }
@@ -153,12 +153,12 @@ public class InGame extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // Change right button's color green and ship's position to right when it touched.
                     rightIconImageView.setImageResource(R.drawable.right_touched);
-                    inGameHandler.post(movingRight);
+                    movingRight.run();
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     // Change left button's color white and Stop ship's moving when it stops being touched.
                     rightIconImageView.setImageResource(R.drawable.right_button);
-                    inGameHandler.removeCallbacks(movingRight);
+                    movingRight.stop();
                 }
                 return true;
             }
@@ -280,10 +280,10 @@ public class InGame extends AppCompatActivity {
     }
     public void gameOver() {
         inGameHandler.removeCallbacks(selectEnemyShooterRunnable);
-        inGameHandler.removeCallbacks(bulletRunnableMap.get(bullet1));
-        inGameHandler.removeCallbacks(bulletRunnableMap.get(bullet2));
-        inGameHandler.removeCallbacks(movingLeft);
-        inGameHandler.removeCallbacks(movingRight);
+        bulletRunnableMap.get(bullet1).stop();
+        bulletRunnableMap.get(bullet2).stop();
+        movingLeft.stop();
+        movingRight.stop();
         inGameHandler.removeCallbacks(enemyBulletRunnable);
         enemyBullet.setVisibility(View.GONE);
         inGameHandler.removeCallbacks(shootingCoolDownRunnable);

@@ -42,4 +42,7 @@ public class MovingRunnable extends InGame implements Runnable{
         else ship.setX(edge);
         movingHandler.postDelayed(this, 17); // fps = 1000/17
     }
+    public void stop() {
+        movingHandler.removeCallbacks(this);
+    }
 }
