@@ -25,6 +25,9 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x App/gradlew
 
+    - name: Build release universal apk
+      run: cd App 
+           ./gradlew presentation:packageReleaseUniversalApk
 
     - name: Upload apk to Firebase App Distribution
       uses: wzieba/Firebase-Distribution-Github-Action@v1
