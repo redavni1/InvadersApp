@@ -12,6 +12,8 @@ public class MovingRunnable extends InGame implements Runnable{
     private float distance;
     /** Edge's X location(left : 0/right : 1008). */
     private float edge;
+    /** Handler to repeat runnable. */
+    private Handler movingHandler = new Handler(Looper.getMainLooper());
 
     /**
      * Initialize i's MovingRunnable.
@@ -32,8 +34,6 @@ public class MovingRunnable extends InGame implements Runnable{
             edge = 1008;
         }
     }
-    /** Handler to control runnable. */
-    public Handler movingHandler = new Handler(Looper.getMainLooper());
     /** Start run to move ship. */
     @Override
     public void run() {

@@ -33,7 +33,7 @@ public class Enemy extends InGame {
         enemy.setX(positionX);
         enemy.setY(positionY);
         enemy.setVisibility(View.VISIBLE);
-        handlerMoving.postDelayed(movingRunnable, 1500);
+        enemyHandler.postDelayed(movingRunnable, 1500);
     }
     public float[] getPositionSides() { return new float[]{ positionX, positionX + enemy.getWidth() }; }
     public float[] getPositionTopBottom() { return new float[]{ positionY, positionY + enemy.getHeight() }; }
@@ -41,12 +41,12 @@ public class Enemy extends InGame {
         ((InGame) mContext).plusScore(score);
         stopMoving();
         enemy.setImageResource(R.drawable.explosion);
-        handlerMoving.postDelayed(explosionRunnable, 500);
+        enemyHandler.postDelayed(explosionRunnable, 500);
         if (((InGame) mContext).enemyFormationIsEmpty()) ((InGame) mContext).gameOver();
     }
     public float distanceX = 200;
     public float distanceY = 0;
-    private Handler handlerMoving = new Handler(Looper.getMainLooper());
+    private Handler enemyHandler = new Handler(Looper.getMainLooper());
     private Runnable movingRunnable = new Runnable() {
         @Override
         public void run() {
@@ -54,15 +54,15 @@ public class Enemy extends InGame {
 //            enemy.setY(enemy.getY()+distanceY);
             enemy.setImageResource(drawables.getFirst());
             drawables.add(drawables.poll());
-            handlerMoving.postDelayed(this, 1500);
+            enemyHandler.postDelayed(this, 1500);
         }
     };
     private Runnable explosionRunnable = new Runnable() {
         @Override
         public void run() {
             enemy.setVisibility(View.GONE);
-            handlerMoving.removeCallbacks(this);
+            enemyHandler.removeCallbacks(this);
         }
     };
-    public void stopMoving() { handlerMoving.removeCallbacks(movingRunnable); }
+    public void stopMoving() { enemyHandler.removeCallbacks(movingRunnable); }
 }

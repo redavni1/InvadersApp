@@ -31,6 +31,8 @@ public class InGame extends AppCompatActivity {
     private ImageView leftIconImageView;
     /** ImageView of right icon. */
     private ImageView rightIconImageView;
+    private MovingRunnable movingLeft;
+    private MovingRunnable movingRight;
     /** TextView of "S H O O T" button. */
     private TextView shootBtnTextView;
     /** LinkedList for reusing bullets. */
@@ -100,15 +102,15 @@ public class InGame extends AppCompatActivity {
         shootBtnTextView = (TextView) findViewById(R.id.shoot);
 
         // Initialize direction icons' runnable.
-        MovingRunnable movingLeft = new MovingRunnable(leftIconImageView, shipImageView);
-        MovingRunnable movingRight = new MovingRunnable(rightIconImageView, shipImageView);
+        movingLeft = new MovingRunnable(leftIconImageView, shipImageView);
+        movingRight = new MovingRunnable(rightIconImageView, shipImageView);
 
         setEnemyBullet();
 
         enemyFormation = new EnemyFormation();
         difficultyLevel.getContext(this);
         setEnemiesByLevel();
-        selectEnemyShooterHandler.postDelayed(selectEnemyShooterRunnable, 3000);
+        inGameHandler.postDelayed(selectEnemyShooterRunnable, 3000);
 
         bullet1 = (ImageView) findViewById(R.id.bullet1);
         bullet2 = (ImageView) findViewById(R.id.bullet2);
@@ -134,12 +136,12 @@ public class InGame extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // Change left button's color green and ship's position to left when it touched.
                     leftIconImageView.setImageResource(R.drawable.left_touched);
-                    movingLeft.movingHandler.post(movingLeft);
+                    inGameHandler.post(movingLeft);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     // Change left button's color white and Stop ship's moving when it stops being touched.
                     leftIconImageView.setImageResource(R.drawable.left_button);
-                    movingLeft.movingHandler.removeCallbacks(movingLeft);
+                    inGameHandler.removeCallbacks(movingLeft);
                 }
                 return true;
             }
@@ -151,12 +153,12 @@ public class InGame extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // Change right button's color green and ship's position to right when it touched.
                     rightIconImageView.setImageResource(R.drawable.right_touched);
-                    movingRight.movingHandler.post(movingRight);
+                    inGameHandler.post(movingRight);
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     // Change left button's color white and Stop ship's moving when it stops being touched.
                     rightIconImageView.setImageResource(R.drawable.right_button);
-                    movingRight.movingHandler.removeCallbacks(movingRight);
+                    inGameHandler.removeCallbacks(movingRight);
                 }
                 return true;
             }
@@ -180,7 +182,7 @@ public class InGame extends AppCompatActivity {
                 // Add bullet to last of the list.
                 bullets.add(loadedBullet);
                 // Set shootbtn's color white and Set it enable again one second later.
-                shootingCooldownHandler.postDelayed(shootingCoolDownRunnable, 1000);
+                inGameHandler.postDelayed(shootingCoolDownRunnable, 1000);
             }
         });
     }
@@ -195,19 +197,18 @@ public class InGame extends AppCompatActivity {
             }
         }
     }
-    /** Handler to control shooting cool down runnable. */
-    private Handler shootingCooldownHandler = new Handler(Looper.getMainLooper());
+    /** Handler to control runnables in InGame.java */
+    private Handler inGameHandler = new Handler(Looper.getMainLooper());
     /** Runnable for cool down. */
     private Runnable shootingCoolDownRunnable = new Runnable() {
         @Override
         public void run() {
-            // Set shootbtn's color white and Set it enable.
+            // Set shootbtn's color white and set it enable.
             shootBtnTextView.setTextColor(Color.WHITE);
             shootBtnTextView.setEnabled(true);
-            shootingCooldownHandler.removeCallbacks(shootingCoolDownRunnable);
+            inGameHandler.removeCallbacks(shootingCoolDownRunnable);
         }
     };
-    private Handler selectEnemyShooterHandler = new Handler(Looper.getMainLooper());
     private Runnable selectEnemyShooterRunnable = new Runnable() {
         @Override
         public void run() {
@@ -217,26 +218,23 @@ public class InGame extends AppCompatActivity {
             enemyBullet.setX((shooter.getPositionSides()[0]+shooter.getPositionSides()[1])/2 - bulletWidth/2);
             enemyBullet.setY(shooter.getPositionTopBottom()[1]);
             enemyBullet.setVisibility(View.VISIBLE);
-            enemyBulletHandler.post(enemyBulletRunnable);
-            selectEnemyShooterHandler.postDelayed(this, 1500 + (int) (Math.random()*3500)); // Cool down = 1.5~5 sec
+            inGameHandler.post(enemyBulletRunnable);
+            inGameHandler.postDelayed(this, 1500 + (int) (Math.random()*3500)); // Cool down = 1.5~5 sec
         }
     };
-
-
-    public Handler enemyBulletHandler = new Handler(Looper.getMainLooper());
     private Runnable enemyBulletRunnable = new Runnable() {
         @Override
         public void run() {
             enemyBullet.setY(enemyBullet.getY()+16);
             if(enemyBullet.getY() + enemyBullet.getHeight() > shipImageView.getY()+ shipImageView.getHeight()) {
                 enemyBullet.setVisibility(View.GONE);
-                enemyBulletHandler.removeCallbacks(this);
+                inGameHandler.removeCallbacks(this);
             } else if (checkShipDestruction()) {
                 enemyBullet.setVisibility(View.GONE);
                 destroyShip();
-                enemyBulletHandler.removeCallbacks(this);
+                inGameHandler.removeCallbacks(this);
             } else {
-                enemyBulletHandler.postDelayed(this, 17); // fps = 1000/17
+                inGameHandler.postDelayed(this, 17); // fps = 1000/17
             }
         }
     };
@@ -260,10 +258,9 @@ public class InGame extends AppCompatActivity {
             rightIconImageView.setImageResource(R.drawable.right_disable);
             shootBtnTextView.setTextColor(Color.GRAY);
             shipImageView.setImageResource(R.drawable.ship_destroyed);
-            destroyShipHandler.postDelayed(destroyShipRunnable, 1500); // destruction cool down = 1.5 sec
+            inGameHandler.postDelayed(destroyShipRunnable, 1500); // destruction cool down = 1.5 sec
         }
     }
-    private Handler destroyShipHandler = new Handler(Looper.getMainLooper());
     private Runnable destroyShipRunnable = new Runnable() {
         @Override
         public void run() {
@@ -274,7 +271,7 @@ public class InGame extends AppCompatActivity {
             rightIconImageView.setImageResource(R.drawable.right_button);
             shootBtnTextView.setTextColor(Color.WHITE);
             shipImageView.setImageResource(R.drawable.ship);
-            destroyShipHandler.removeCallbacks(this);
+            inGameHandler.removeCallbacks(this);
         }
     };
     private boolean checkNoLives() { return remainLives == 0; }
@@ -282,13 +279,15 @@ public class InGame extends AppCompatActivity {
         return enemyFormation.noEnemies();
     }
     public void gameOver() {
-        selectEnemyShooterHandler.removeCallbacks(selectEnemyShooterRunnable);
-        bulletRunnableMap.get(bullet1).removeRunnable();
-        bulletRunnableMap.get(bullet2).removeRunnable();
-        enemyBulletHandler.removeCallbacks(enemyBulletRunnable);
+        inGameHandler.removeCallbacks(selectEnemyShooterRunnable);
+        inGameHandler.removeCallbacks(bulletRunnableMap.get(bullet1));
+        inGameHandler.removeCallbacks(bulletRunnableMap.get(bullet2));
+        inGameHandler.removeCallbacks(movingLeft);
+        inGameHandler.removeCallbacks(movingRight);
+        inGameHandler.removeCallbacks(enemyBulletRunnable);
         enemyBullet.setVisibility(View.GONE);
-        shootingCooldownHandler.removeCallbacks(shootingCoolDownRunnable);
-        destroyShipHandler.removeCallbacks(destroyShipRunnable);
+        inGameHandler.removeCallbacks(shootingCoolDownRunnable);
+        inGameHandler.removeCallbacks(destroyShipRunnable);
         shootBtnTextView.setTextColor(Color.GRAY);
         shootBtnTextView.setEnabled(false);
         leftIconImageView.setEnabled(false);

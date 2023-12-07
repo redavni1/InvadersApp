@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 public class BulletRunnable extends InGame implements Runnable {
     /** Handler to control runnable. */
-    private Handler handlerBullet = new Handler(Looper.getMainLooper());
+    private Handler bulletHandler = new Handler(Looper.getMainLooper());
     /** ImageView of loaded bullet */
     private ImageView loadedBullet;
     private EnemyFormation enemyFormation;
@@ -31,15 +31,14 @@ public class BulletRunnable extends InGame implements Runnable {
         loadedBullet.setY(loadedBullet.getY()-16);
         if(loadedBullet.getY() < 200) {
             loadedBullet.setVisibility(View.GONE);
-            handlerBullet.removeCallbacks(this);
+            bulletHandler.removeCallbacks(this);
         } else if (checkCollision()) {
             loadedBullet.setVisibility(View.GONE);
-            handlerBullet.removeCallbacks(this);
+            bulletHandler.removeCallbacks(this);
         } else {
-            handlerBullet.postDelayed(this, 17); // fps = 1000/17
+            bulletHandler.postDelayed(this, 17); // fps = 1000/17
         }
     }
-
     private boolean checkCollision() {
         float x = loadedBullet.getX();
         float y = loadedBullet.getY();
@@ -53,9 +52,5 @@ public class BulletRunnable extends InGame implements Runnable {
             }
         }
         return false;
-    }
-    public void removeRunnable() {
-        handlerBullet.removeCallbacks(this);
-        loadedBullet.setVisibility(View.GONE);
     }
 }
