@@ -230,7 +230,9 @@ public class InGame extends AppCompatActivity {
         });
     }
 
-    /** Handler to control runnables in InGame.java */
+    /**
+     * Handler to control runnables in InGame.java
+     */
     private Handler inGameHandler = new Handler(Looper.getMainLooper());
 
     /**
@@ -284,9 +286,9 @@ public class InGame extends AppCompatActivity {
     };
 
     /**
-     * Check ship is attacked by enemy's bullet.
+     * Check ship has been attacked by enemy's bullet.
      *
-     * @return True if ship is attacked
+     * @return Return true if ship is attacked.
      */
     private boolean checkShipDestruction() {
         float x = enemyBullet.getX();
@@ -344,16 +346,16 @@ public class InGame extends AppCompatActivity {
     }
 
     /**
-     * Check ship doesn't have life.
+     * Check ship has no lives.
      *
-     * @return True if ship doesn't have life.
+     * @return Return true if ship has no lives.
      */
     private boolean checkNoLives() { return remainLives == 0; }
 
     /**
      * Check enemy formation is empty.
      *
-     * @return True if enemy formation is empty.
+     * @return Return true if enemy formation is empty.
      */
     public boolean enemyFormationIsEmpty() {
         return enemyFormation.noEnemies();

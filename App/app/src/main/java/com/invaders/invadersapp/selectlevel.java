@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class selectlevel extends AppCompatActivity {
     Intent intent;
+    /** Previously generated object to control difficulty and level. */
     private DifficultyLevel difficultyLevel;
     private BlinkingRunnable br;
     private TextView select_level;

@@ -18,6 +18,7 @@ public class SelectDifficulty extends AppCompatActivity {
     private TextView title;
     /** Runnable object for text blinking. */
     private BlinkingRunnable br;
+    /** Object to control difficulty and level. */
     private DifficultyLevel difficultyLevel = new DifficultyLevel();
 
     @Override

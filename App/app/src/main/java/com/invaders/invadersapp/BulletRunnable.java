@@ -12,6 +12,7 @@ public class BulletRunnable extends InGame implements Runnable {
     private Handler bulletHandler = new Handler(Looper.getMainLooper());
     /** ImageView of loaded bullet */
     private ImageView loadedBullet;
+    /** EnemyFormation object previously generated */
     private EnemyFormation enemyFormation;
 
 
@@ -25,7 +26,9 @@ public class BulletRunnable extends InGame implements Runnable {
         loadedBullet = b;
         enemyFormation = e;
     }
-    /** Start run to shoot bullet. */
+    /**
+     * Start run to shoot bullet.
+     */
     @Override
     public void run() {
         loadedBullet.setY(loadedBullet.getY()-16);
@@ -39,6 +42,12 @@ public class BulletRunnable extends InGame implements Runnable {
             bulletHandler.postDelayed(this, 17); // fps = 1000/17
         }
     }
+
+    /**
+     * Check collision between a enemy and loaded bullet.
+     *
+     * @return True if collision occurs.
+     */
     private boolean checkCollision() {
         float x = loadedBullet.getX();
         float y = loadedBullet.getY();
@@ -53,6 +62,10 @@ public class BulletRunnable extends InGame implements Runnable {
         }
         return false;
     }
+
+    /**
+     * Stop BulletRunnable.
+     */
     public void stop() {
         loadedBullet.setVisibility(View.GONE);
         bulletHandler.removeCallbacks(this);

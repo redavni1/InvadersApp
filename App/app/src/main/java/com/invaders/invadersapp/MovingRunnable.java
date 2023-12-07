@@ -7,6 +7,7 @@ import android.widget.ImageView;
 public class MovingRunnable extends InGame implements Runnable{
     /** ImageView of this runnable. */
     private ImageView icon;
+    /** ImageView of ship */
     private ImageView ship;
     /** Ship's moving distance by a frame. */
     private float distance;
@@ -34,7 +35,9 @@ public class MovingRunnable extends InGame implements Runnable{
             edge = 1008;
         }
     }
-    /** Start run to move ship. */
+    /**
+     * Start run to move ship.
+     */
     @Override
     public void run() {
         float nextX = ship.getX()+distance;
@@ -42,6 +45,10 @@ public class MovingRunnable extends InGame implements Runnable{
         else ship.setX(edge);
         movingHandler.postDelayed(this, 17); // fps = 1000/17
     }
+
+    /**
+     * Stop moving.
+     */
     public void stop() {
         movingHandler.removeCallbacks(this);
     }
