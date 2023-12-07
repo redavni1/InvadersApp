@@ -38,8 +38,10 @@ public class Enemy extends InGame {
     public float[] getPositionSides() { return new float[]{ positionX, positionX + enemy.getWidth() }; }
     public float[] getPositionTopBottom() { return new float[]{ positionY, positionY + enemy.getHeight() }; }
     public void destroy() {
-        enemy.setVisibility(View.GONE);
         ((InGame) mContext).plusScore(score);
+        stopMoving();
+        enemy.setImageResource(R.drawable.explosion);
+        handlerMoving.postDelayed(explosionRunnable, 500);
         if (((InGame) mContext).enemyFormationIsEmpty()) ((InGame) mContext).gameOver();
     }
     public float distanceX = 200;
@@ -55,6 +57,12 @@ public class Enemy extends InGame {
             handlerMoving.postDelayed(this, 1500);
         }
     };
+    private Runnable explosionRunnable = new Runnable() {
+        @Override
+        public void run() {
+            enemy.setVisibility(View.GONE);
+            handlerMoving.removeCallbacks(this);
+        }
+    };
     public void stopMoving() { handlerMoving.removeCallbacks(movingRunnable); }
-    public int getScore() { return score; }
 }
