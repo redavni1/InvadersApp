@@ -29,10 +29,15 @@ jobs:
         ./gradlew build
 
 
-    - name: Run Tests
+    - name: Run Unit Tests
       run: |
         cd App
         ./gradlew test
+
+    - name: Run Android Tests
+      run: |
+        cd App
+        ./gradlew connectedAndroidTest
 
 
       
