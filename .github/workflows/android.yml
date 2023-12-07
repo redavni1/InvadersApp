@@ -35,17 +35,12 @@ jobs:
         ./gradlew test
 
 
-    - name: Set up Android emulator
-      run: |
-        echo "y" | sdkmanager --install "system-images;android-28;google_apis;armeabi-v7a"
-        echo "no" | avdmanager create avd --force -n test -k "system-images;android-28;google_apis;armeabi-v7a"
-        emulator -avd test -no-audio -no-window -gpu swiftshader & android-wait-for-emulator
-        adb shell input keyevent 82 &
-
     - name: Run Android Tests
-      run: |
-        cd App
-        ./gradlew connectedAndroidTest
+      uses: ReactiveCircus/android-emulator-runner@v2.29.0
+      with:
+        api-level: 29
+        script: cd App
+                ./gradlew connectedAndroidTest
 
 
       
