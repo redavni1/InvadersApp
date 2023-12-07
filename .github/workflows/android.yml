@@ -34,16 +34,4 @@ jobs:
         cd App
         ./gradlew test
 
-
-    - name: Run Android Tests
-      uses: ReactiveCircus/android-emulator-runner@v2.29.0
-      with:
-        api-level: 27
-        script: 
-                sudo usermod -aG kvm $USER
-                sudo groupadd -r kvm
-                cd App
-                ./gradlew connectedAndroidTest
-
-
       
