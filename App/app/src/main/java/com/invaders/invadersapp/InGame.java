@@ -21,6 +21,7 @@ import java.util.Map;
 
 public class InGame extends AppCompatActivity {
     Intent intent;
+    /** DifficultyLevel class object previously generated */
     private DifficultyLevel difficultyLevel;
 
 
@@ -31,39 +32,59 @@ public class InGame extends AppCompatActivity {
     private ImageView leftIconImageView;
     /** ImageView of right icon. */
     private ImageView rightIconImageView;
+    /** Runnable for steering ship left. */
     private MovingRunnable movingLeft;
+    /** Runnable for steering ship right. */
     private MovingRunnable movingRight;
     /** TextView of "S H O O T" button. */
     private TextView shootBtnTextView;
     /** LinkedList for reusing bullets. */
     private LinkedList<ImageView> bullets = new LinkedList<>();
     /** ImageView of bullet1, 2. */
-    private ImageView bullet1;
-    private ImageView bullet2;
+    private ImageView bullet1; private ImageView bullet2;
     /** Bullet's width. */
     private float bulletWidth = 17;
     /** Map for linking bullet and bullet's runnable. */
     private Map<ImageView, BulletRunnable> bulletRunnableMap;
     /** Temporary ImageView for shot bullet. */
     private ImageView loadedBullet;
+    /** Management enemies set as list. */
     private EnemyFormation enemyFormation;
+    /** ImageView of enemy's bullet. */
     private ImageView enemyBullet;
+    /** Number of life remaining. */
     private int remainLives = 3;
+    /** TextView of remainLives. */
     private TextView livesTextView;
+    /** ImageView array of life icons. */
     private ImageView[] lifeIcons;
+    /** TextView of game over. */
     private TextView gameOverTextView;
+    /** TextView that displaing current score. */
     private TextView scoreTextView;
+    /** Number of current score. */
     private int score = 0;
 
 
+    /**
+     * Initialize game over TextView.
+     */
     private void setGameOverTextView() {
         gameOverTextView = (TextView) findViewById(R.id.gameover);
         gameOverTextView.setVisibility(View.GONE);
     }
+
+    /**
+     * Initialize score TextView.
+     */
     private void setScoreTextView() {
         scoreTextView = (TextView) findViewById(R.id.score);
         scoreTextView.setText(score+"");
     }
+    
+    /**
+     * Initialize about life.
+     */
     private void setLives() {
         livesTextView = (TextView) findViewById(R.id.livesText);
         livesTextView.setText(remainLives+"");
@@ -73,50 +94,28 @@ public class InGame extends AppCompatActivity {
                 (ImageView) findViewById(R.id.life3)
         };
     }
-    private void setDirectionIcons() {
+
+    /**
+     * Initialize steering ship icons.
+     */
+    private void setSteeringShipIcons() {
         leftIconImageView = (ImageView) findViewById(R.id.left_icon);
         rightIconImageView = (ImageView) findViewById(R.id.right_icon);
         leftIconImageView.setImageResource(R.drawable.left_button);
         rightIconImageView.setImageResource(R.drawable.right_button);
-    }
-    private void setEnemyBullet() {
-        enemyBullet = (ImageView) findViewById(R.id.enemybullet);
-        enemyBullet.setImageResource(R.drawable.enemybullet);
-        enemyBullet.setVisibility(View.GONE);
-    }
-
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.ingame);
-
-        intent = getIntent();
-        difficultyLevel = (DifficultyLevel) intent.getSerializableExtra("Level", DifficultyLevel.class);
-
-        setGameOverTextView();
-        setScoreTextView();
-        setLives();
-        setDirectionIcons();
-        shipImageView = (ImageView) findViewById(R.id.ship);
-        shootBtnTextView = (TextView) findViewById(R.id.shoot);
-
-        // Initialize direction icons' runnable.
+        // Initialize steering icon's runnable.
         movingLeft = new MovingRunnable(leftIconImageView, shipImageView);
         movingRight = new MovingRunnable(rightIconImageView, shipImageView);
+    }
 
-        setEnemyBullet();
-
-        enemyFormation = new EnemyFormation();
-        difficultyLevel.getContext(this);
-        setEnemiesByLevel();
-        inGameHandler.postDelayed(selectEnemyShooterRunnable, 3000);
-
+    /**
+     * Initialize bullets.
+     */
+    private void setBullets() {
         bullet1 = (ImageView) findViewById(R.id.bullet1);
         bullet2 = (ImageView) findViewById(R.id.bullet2);
         bullet1.setVisibility(View.GONE);
         bullet2.setVisibility(View.GONE);
-
         // Initialize bulletRunnableMap for linking bullet ImageView and their runnable.
         bulletRunnableMap = new HashMap<ImageView, BulletRunnable>() {{
             put(bullet1, new BulletRunnable(bullet1, enemyFormation));
@@ -125,10 +124,54 @@ public class InGame extends AppCompatActivity {
         // Add bullets into their LinkedList for reusing.
         bullets.add(bullet1);
         bullets.add(bullet2);
+    }
 
+    /**
+     * Initialize enemy's bullet.
+     */
+    private void setEnemyBullet() {
+        enemyBullet = (ImageView) findViewById(R.id.enemybullet);
+        enemyBullet.setImageResource(R.drawable.enemybullet);
+        enemyBullet.setVisibility(View.GONE);
+    }
 
+    /**
+     * Initialize enemies formation by level.
+     */
+    private void setEnemiesByLevel() {
+        Enemy[][] tmpEnemies = difficultyLevel.setEnemies();
+        for (int i = 0; i < tmpEnemies.length; i++) {
+            enemyFormation.setNewEnemiesList();
+            for (int j = 0; j < tmpEnemies[0].length; j++) {
+                Enemy e = tmpEnemies[i][j];
+                e.setVisible();
+                enemyFormation.addEnemy(e, i);
+            }
+        }
+    }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.ingame);
 
+        intent = getIntent();
+        // Get the previously created DifficultyLevel class object.
+        difficultyLevel = (DifficultyLevel) intent.getSerializableExtra("Level", DifficultyLevel.class);
+        // Set components.
+        setGameOverTextView();
+        setScoreTextView();
+        setLives();
+        shipImageView = (ImageView) findViewById(R.id.ship);
+        shootBtnTextView = (TextView) findViewById(R.id.shoot);
+        setSteeringShipIcons();
+        setEnemyBullet();
+        enemyFormation = new EnemyFormation();
+        difficultyLevel.getContext(this);
+        setEnemiesByLevel();
+        setBullets();
+        // Start enemy's shooting after 3 sec.
+        inGameHandler.postDelayed(selectEnemyShooterRunnable, 3000);
 
         leftIconImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -186,20 +229,13 @@ public class InGame extends AppCompatActivity {
             }
         });
     }
-    private void setEnemiesByLevel() {
-        Enemy[][] tmpEnemies = difficultyLevel.setEnemies();
-        for (int i = 0; i < tmpEnemies.length; i++) {
-            enemyFormation.setNewEnemiesList();
-            for (int j = 0; j < tmpEnemies[0].length; j++) {
-                Enemy e = tmpEnemies[i][j];
-                e.setVisible();
-                enemyFormation.addEnemy(e, i);
-            }
-        }
-    }
+
     /** Handler to control runnables in InGame.java */
     private Handler inGameHandler = new Handler(Looper.getMainLooper());
-    /** Runnable for cool down. */
+
+    /**
+     * Runnable for ship's shooting cool down.
+     */
     private Runnable shootingCoolDownRunnable = new Runnable() {
         @Override
         public void run() {
@@ -209,6 +245,10 @@ public class InGame extends AppCompatActivity {
             inGameHandler.removeCallbacks(shootingCoolDownRunnable);
         }
     };
+
+    /**
+     * Runnable for select shooter from enemies after cool down.
+     */
     private Runnable selectEnemyShooterRunnable = new Runnable() {
         @Override
         public void run() {
@@ -222,6 +262,10 @@ public class InGame extends AppCompatActivity {
             inGameHandler.postDelayed(this, 1500 + (int) (Math.random()*3500)); // Cool down = 1.5~5 sec
         }
     };
+
+    /**
+     * Start runnable to shoot bullet.
+     */
     private Runnable enemyBulletRunnable = new Runnable() {
         @Override
         public void run() {
@@ -238,6 +282,12 @@ public class InGame extends AppCompatActivity {
             }
         }
     };
+
+    /**
+     * Check ship is attacked by enemy's bullet.
+     *
+     * @return True if ship is attacked
+     */
     private boolean checkShipDestruction() {
         float x = enemyBullet.getX();
         float y = enemyBullet.getY()+enemyBullet.getHeight();
@@ -245,23 +295,31 @@ public class InGame extends AppCompatActivity {
             return true;
         return false;
     }
+
+    /**
+     * Update settings when ship destroyed.
+     */
     private void destroyShip() {
         remainLives--;
         livesTextView.setText(remainLives+"");
         lifeIcons[remainLives].setVisibility(View.GONE);
+        leftIconImageView.setEnabled(false);
+        rightIconImageView.setEnabled(false);
+        shootBtnTextView.setEnabled(false);
+        leftIconImageView.setImageResource(R.drawable.left_disable);
+        rightIconImageView.setImageResource(R.drawable.right_disable);
+        shootBtnTextView.setTextColor(Color.GRAY);
+        shipImageView.setImageResource(R.drawable.ship_destroyed);
         if (checkNoLives()) gameOver();
-        else {
-            leftIconImageView.setEnabled(false);
-            rightIconImageView.setEnabled(false);
-            shootBtnTextView.setEnabled(false);
-            leftIconImageView.setImageResource(R.drawable.left_disable);
-            rightIconImageView.setImageResource(R.drawable.right_disable);
-            shootBtnTextView.setTextColor(Color.GRAY);
-            shipImageView.setImageResource(R.drawable.ship_destroyed);
-            inGameHandler.postDelayed(destroyShipRunnable, 1500); // destruction cool down = 1.5 sec
+        else { // Set cool down about ship's destruction.
+            inGameHandler.postDelayed(terminateShipDestructionCoolDown, 1500); // destruction cool down = 1.5 sec
         }
     }
-    private Runnable destroyShipRunnable = new Runnable() {
+
+    /**
+     * Runnable for termination ship's destruction cool down.
+     */
+    private Runnable terminateShipDestructionCoolDown = new Runnable() {
         @Override
         public void run() {
             leftIconImageView.setEnabled(true);
@@ -274,34 +332,53 @@ public class InGame extends AppCompatActivity {
             inGameHandler.removeCallbacks(this);
         }
     };
+
+    /**
+     * Update score when enemy is destroyed.
+     *
+     * @param s Scores assigned to the destroyed enemy.
+     */
+    public void plusScore(int s) {
+        score += s;
+        scoreTextView.setText(score+"");
+    }
+
+    /**
+     * Check ship doesn't have life.
+     *
+     * @return True if ship doesn't have life.
+     */
     private boolean checkNoLives() { return remainLives == 0; }
+
+    /**
+     * Check enemy formation is empty.
+     *
+     * @return True if enemy formation is empty.
+     */
     public boolean enemyFormationIsEmpty() {
         return enemyFormation.noEnemies();
     }
+
+    /**
+     * Change View setting to game over in InGame activity.
+     */
     public void gameOver() {
         inGameHandler.removeCallbacks(selectEnemyShooterRunnable);
         bulletRunnableMap.get(bullet1).stop();
         bulletRunnableMap.get(bullet2).stop();
         movingLeft.stop();
         movingRight.stop();
+        if (!enemyFormationIsEmpty()) enemyFormation.stopEnemiesMoving();
         inGameHandler.removeCallbacks(enemyBulletRunnable);
         enemyBullet.setVisibility(View.GONE);
         inGameHandler.removeCallbacks(shootingCoolDownRunnable);
-        inGameHandler.removeCallbacks(destroyShipRunnable);
+        inGameHandler.removeCallbacks(terminateShipDestructionCoolDown);
         shootBtnTextView.setTextColor(Color.GRAY);
         shootBtnTextView.setEnabled(false);
         leftIconImageView.setEnabled(false);
         rightIconImageView.setEnabled(false);
         leftIconImageView.setImageResource(R.drawable.left_disable);
         rightIconImageView.setImageResource(R.drawable.right_disable);
-        if (!enemyFormation.noEnemies()) {
-            enemyFormation.stopEnemiesMoving();
-            shipImageView.setImageResource(R.drawable.ship_destroyed);
-        }
         gameOverTextView.setVisibility(View.VISIBLE);
-    }
-    public void plusScore(int s) {
-        score += s;
-        scoreTextView.setText(score+"");
     }
 }
