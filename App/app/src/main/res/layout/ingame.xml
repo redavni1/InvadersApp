@@ -64,10 +64,18 @@
     <ImageView
         android:id="@+id/bullet1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/bullet"
+        app:layout_constraintBottom_toTopOf="@+id/seperator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
         android:id="@+id/bullet2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/bullet"
+        app:layout_constraintBottom_toTopOf="@+id/seperator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
