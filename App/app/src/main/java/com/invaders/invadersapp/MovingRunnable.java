@@ -46,7 +46,10 @@ public class MovingRunnable extends InGame implements Runnable{
      */
     public void setShip(ImageView s) {
         ship = s;
-        shipXPosition = ship.getX();
+        setShipXPosition(ship.getX());
+    }
+    public void setShipXPosition(float x) {
+        shipXPosition = x;
     }
 
     /**
@@ -54,9 +57,8 @@ public class MovingRunnable extends InGame implements Runnable{
      */
     public void move() {
         float nextX = shipXPosition + distance;
-        if (nextX > 0 && nextX < 1008) shipXPosition = nextX;
-        else shipXPosition = edge;
-        movingHandler.postDelayed(this, 17); // fps = 1000/17
+        if (nextX > 0 && nextX < 1008) setShipXPosition(nextX);
+        else setShipXPosition(edge);
     }
 
     /**
@@ -64,9 +66,10 @@ public class MovingRunnable extends InGame implements Runnable{
      */
     @Override
     public void run() {
-        shipXPosition = ship.getX();
+        setShipXPosition(ship.getX());
         move();
         ship.setX(shipXPosition);
+        movingHandler.postDelayed(this, 17); // fps = 1000/17
     }
 
     /**
