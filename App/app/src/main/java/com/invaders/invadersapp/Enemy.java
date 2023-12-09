@@ -86,7 +86,7 @@ public class Enemy {
     public void destroy() {
         ((InGame) mContext).plusScore(score);
         stopMoving();
-        enemy.setImageResource(getExplosionDrawable());
+        enemy.setImageResource(R.drawable.explosion);
         enemyHandler.postDelayed(explosionRunnable, 500);
         if (((InGame) mContext).enemyFormationIsEmpty()) ((InGame) mContext).gameOver();
     }
@@ -117,9 +117,6 @@ public class Enemy {
             enemyHandler.postDelayed(this, 1500);
         }
     };
-    public int getExplosionDrawable() {
-        return R.drawable.explosion;
-    }
 
     /**
      * Runnable for enemy's explosion.
