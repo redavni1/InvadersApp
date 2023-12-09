@@ -104,8 +104,10 @@ public class InGame extends AppCompatActivity {
         leftIconImageView.setImageResource(R.drawable.left_button);
         rightIconImageView.setImageResource(R.drawable.right_button);
         // Initialize steering icon's runnable.
-        movingLeft = new MovingRunnable(leftIconImageView, shipImageView);
-        movingRight = new MovingRunnable(rightIconImageView, shipImageView);
+        movingLeft = new MovingRunnable("LEFT");
+        movingRight = new MovingRunnable("RIGHT");
+        movingLeft.setShip(shipImageView);
+        movingRight.setShip(shipImageView);
     }
 
     /**
@@ -383,4 +385,7 @@ public class InGame extends AppCompatActivity {
         rightIconImageView.setImageResource(R.drawable.right_disable);
         gameOverTextView.setVisibility(View.VISIBLE);
     }
+
+    public float getShipXCoordination() { return shipImageView.getX(); }
+    public int getScore() { return score; }
 }
