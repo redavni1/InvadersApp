@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,11 +19,22 @@ public class SelectDifficulty extends AppCompatActivity {
     private TextView title;
     /** Runnable object for text blinking. */
     private BlinkingRunnable br;
+    private boolean isNextActivityButtonClick = false;
+
+    private final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            isNextActivityButtonClick = true;
+            finish();
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.selectdifficulty);
+
+        this.getOnBackPressedDispatcher().addCallback(this, callback);
 
         title = findViewById(R.id.difficultytitle);
         easyButton = findViewById(R.id.button_easy);
@@ -43,6 +55,9 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
+
+                isNextActivityButtonClick = true;
+
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
                 startActivity(intent);
             }
@@ -52,6 +67,9 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
+
+                isNextActivityButtonClick = true;
+
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
                 startActivity(intent);
             }
@@ -61,6 +79,9 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
+
+                isNextActivityButtonClick = true;
+
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
                 startActivity(intent);
             }
@@ -70,6 +91,9 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
+
+                isNextActivityButtonClick = true;
+
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
                 startActivity(intent);
             }
@@ -80,11 +104,35 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(5, "GREEN");
+
+                isNextActivityButtonClick = true;
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
 
+    }
+
+
+    // Start playing game screen BGM when the activity starts
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.start();
+    }
+
+    // Pause the game screen BGM when the activity stops, unless transitioning to another activity
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (!isNextActivityButtonClick) {
+            MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.pause();
+        }else {
+            isNextActivityButtonClick = false;
+        }
     }
 }
 

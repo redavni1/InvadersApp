@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "178652236741",
+    "project_id": "invadersapp-aee19",
+    "storage_bucket": "invadersapp-aee19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178652236741:android:ee2c8c76c3f0ab027259ac",
+        "android_client_info": {
+          "package_name": "com.invaders.invadersapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBow3BgBpKM84LY-JpZblmC-8M6bNoNVQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
