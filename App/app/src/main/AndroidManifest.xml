@@ -27,7 +27,6 @@
         <activity
             android:name=".selectlevel"
             android:exported="true" />
-
     </application>
 
 </manifest>

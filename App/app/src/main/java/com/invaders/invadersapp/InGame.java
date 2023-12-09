@@ -18,6 +18,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.invaders.invadersapp.sound.BGMManager;
+
+import android.media.MediaPlayer;
+
+
+
+
 
 public class InGame extends AppCompatActivity {
     /** ImageView of ship. */
@@ -39,6 +46,7 @@ public class InGame extends AppCompatActivity {
     private Map<ImageView, BulletRunnable> runnableMap;
     /** Temporary ImageView for shot bullet. */
     private ImageView loadedBullet;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +68,8 @@ public class InGame extends AppCompatActivity {
 
         bullet1 = (ImageView) findViewById(R.id.bullet1);
         bullet2 = (ImageView) findViewById(R.id.bullet2);
+        bullet1.setVisibility(View.GONE);
+        bullet2.setVisibility(View.GONE);
 
         // Initialize runnableMap for linking bullet ImageView and their runnable.
         runnableMap = new HashMap<ImageView, BulletRunnable>() {{
@@ -110,7 +120,7 @@ public class InGame extends AppCompatActivity {
                 // Load bullet that is head of the list.
                 loadedBullet = bullets.poll();
                 // Set loaded bullet's image resource.
-                loadedBullet.setImageResource(R.drawable.bullet);
+                loadedBullet.setVisibility(View.VISIBLE);
                 // Change shootbtn's color gray and Set it disable.
                 shootBtn.setTextColor(Color.GRAY);
                 shootBtn.setEnabled(false);
@@ -127,6 +137,8 @@ public class InGame extends AppCompatActivity {
         });
     }
 
+
+
     /** Handler to control shooting cool down runnable. */
     private Handler handlerShooting = new Handler(Looper.getMainLooper());
     /** Runnable for cool down. */
@@ -138,4 +150,21 @@ public class InGame extends AppCompatActivity {
             shootBtn.setEnabled(true);
         }
     };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // InGame BGM start
+        MainActivity.mBGMManager.mMediaPlayerInGame.start();
+    }
+
+    // Pause the game screen BGM when the activity stops, unless transitioning to another activity
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        MainActivity.mBGMManager.mMediaPlayerInGame.seekTo(0);
+        MainActivity.mBGMManager.mMediaPlayerInGame.pause();
+    }
 }
