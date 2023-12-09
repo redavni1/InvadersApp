@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import android.media.MediaPlayer;
+
 
 
 
@@ -55,6 +57,11 @@ public class InGame extends AppCompatActivity {
             MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.stop();
             MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.release();
         }
+
+        // InGame BGM start
+        inGameMediaPlayer = MediaPlayer.create(this, R.raw.ingamebgm);
+        inGameMediaPlayer.start();
+
 
         leftIcon = (ImageView) findViewById(R.id.left_icon);
         rightIcon = (ImageView) findViewById(R.id.right_icon);
