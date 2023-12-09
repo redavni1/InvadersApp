@@ -5,35 +5,49 @@ import android.media.MediaPlayer;
 
 import com.invaders.invadersapp.R;
 
-import android.content.Context;
-import android.media.MediaPlayer;
-
+/**
+ * This class represents the background music player for the store in the Invaders app.
+ * It follows the singleton pattern to ensure only one instance exists.
+ */
 public class StoreBGM {
-    private static StoreBGM storebgm;
+    /** The single instance of the StoreBGM class. */
+    public static StoreBGM storebgm;
 
+    /** The MediaPlayer responsible for playing the store background music. */
     public MediaPlayer storebgm_player;
-    private Context context;
 
-    // Private constructor to prevent direct instantiation
-    private StoreBGM(Context context) {
-        this.context = context;
-        storebgm_player = MediaPlayer.create(context, R.raw.store_bgm); // create bgm player using bgm file
-        storebgm_player.setLooping(true);  // Set background music to loop
+    /**
+     * Private constructor to prevent direct instantiation.
+     * Initializes the MediaPlayer and sets it to looping mode.
+     *
+     * @param player The MediaPlayer instance for background music.
+     */
+    private StoreBGM(MediaPlayer player) {
+        this.storebgm_player = player;
+        storebgm_player.setLooping(true);
     }
 
-    // Singleton pattern to ensure only one instance exists
+    /**
+     * Retrieves the singleton instance of the StoreBGM class.
+     * Creates a new instance if it does not exist yet.
+     *
+     * @param context The context used to create the MediaPlayer.
+     * @return The StoreBGM instance.
+     */
     public static StoreBGM getInstance(Context context) {
-        if (storebgm == null) { //when storebgm instance is null
-            storebgm = new StoreBGM(context); //newly allocate storebgm instance
+        if (storebgm == null) {
+            MediaPlayer mediaPlayer = MediaPlayer.create(context, R.raw.store_bgm);
+            storebgm = new StoreBGM(mediaPlayer);
         }
         return storebgm;
     }
 
-    // Start playing the background music
+    /**
+     * Starts playing the background music if it is not already playing.
+     */
     public void start() {
         if (!storebgm_player.isPlaying()) {
             storebgm_player.start();
         }
     }
 }
-
