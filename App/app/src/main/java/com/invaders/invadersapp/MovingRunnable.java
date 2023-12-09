@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MovingRunnable extends InGame implements Runnable{
+public class MovingRunnable implements Runnable{
     /** Map of direction and location info. */
     private Map<String, List<Float>> direction = new HashMap<String, List<Float>>() {{
         put("LEFT", Arrays.asList((float) -8, (float) 0));
@@ -26,7 +26,7 @@ public class MovingRunnable extends InGame implements Runnable{
     /** Edge's X location(left : 0/right : 1008). */
     private float edge;
     /** Handler to repeat runnable. */
-    private Handler movingHandler = new Handler(Looper.getMainLooper());
+    private Handler movingHandler = new Handler();
 
     /**
      * Initialize i's MovingRunnable.
@@ -48,10 +48,24 @@ public class MovingRunnable extends InGame implements Runnable{
         ship = s;
         setShipXPosition(ship.getX());
     }
+
+    /**
+     * Set shipXPosition x.
+     *
+     * @param x position x.
+     */
     public void setShipXPosition(float x) {
         shipXPosition = x;
     }
 
+    /**
+     * Return shipXPosition.
+     *
+     * @return Float of shipXPosition.
+     */
+    public float getShipXPosition() {
+        return shipXPosition;
+    }
     /**
      * Update shipXPosition according direction.
      */
