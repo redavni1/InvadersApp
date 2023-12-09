@@ -48,13 +48,17 @@ public class MovingRunnable extends InGame implements Runnable{
         ship = s;
         shipXPosition = ship.getX();
     }
+
+    /**
+     * Update shipXPosition according direction.
+     */
     public void move() {
         float nextX = shipXPosition + distance;
         if (nextX > 0 && nextX < 1008) shipXPosition = nextX;
         else shipXPosition = edge;
-        Log.i("position", shipXPosition+"");
         movingHandler.postDelayed(this, 17); // fps = 1000/17
     }
+
     /**
      * Start run to move ship.
      */
