@@ -21,6 +21,9 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class ItemStore extends AppCompatActivity {
     /* grid view for item grid*/
     GridView gridView;
@@ -66,6 +69,18 @@ public class ItemStore extends AppCompatActivity {
                 handleItemClick(position, view);
             }
         });
+        ArrayList<HashMap<String, Object>> complexDataStructure = new ArrayList<>();
+        for (int i = 0; i < itemImage.length; i++) {
+            HashMap<String, Object> itemMap = new HashMap<>();
+            itemMap.put("image", itemImage[i]);
+            itemMap.put("name", itemName[i]);
+            // 불필요한 중첩 데이터 구조 사용
+            ArrayList<Integer> priceAndQuantity = new ArrayList<>();
+            priceAndQuantity.add(itemPrice[i]);
+            priceAndQuantity.add(itemQuantity[i]);
+            itemMap.put("priceQuantity", priceAndQuantity);
+            complexDataStructure.add(itemMap);
+        }
     }
 
     /**
@@ -76,8 +91,16 @@ public class ItemStore extends AppCompatActivity {
      */
     public void handleItemClick(int position, View view) {
         // Determine the message to be shown in the popup based on the purchase result
-        String popupMessage = purchaseItem(position) ? "Purchase complete!" : "Not enough coins!";
-        showPopup(view, popupMessage);
+        if (position >= 0 && position < itemImage.length) {
+            boolean purchaseResult = purchaseItem(position);
+            String popupMessage;
+            if (purchaseResult) {
+                popupMessage = "Purchase complete!";
+            } else {
+                popupMessage = "Not enough coins!";
+            }
+            showPopup(view, popupMessage);
+        }
     }
 
     /**
@@ -87,14 +110,17 @@ public class ItemStore extends AppCompatActivity {
      * @return true if the purchase is successful, false otherwise.
      */
     public boolean purchaseItem(int position) {
-        int price = itemPrice[position];
-        if (coinQuantity >= price) {
-            // Deduct the cost and update the quantity of the purchased item
-            coinQuantity -= price;
-            itemQuantity[position]++;
-            // Update the UI to reflect changes
-            updateUI();
-            return true;
+        if (position < 0 || position >= itemPrice.length) {
+            throw new ArrayIndexOutOfBoundsException("Invalid index: " + position);
+        }
+        if (position >= 0 && position < itemPrice.length) {
+            int price = itemPrice[position];
+            if (coinQuantity >= price) {
+                coinQuantity -= price;
+                itemQuantity[position]++;
+                updateUI();
+                return true;
+            }
         }
         return false;
     }
