@@ -36,8 +36,8 @@ public class Enemy {
     public Enemy(int i, int d1, int d2, float x, float y, int s) {
         id = i;
         drawables = new LinkedList<>();
-        drawables.add(d1);
         drawables.add(d2);
+        drawables.add(d1);
         drawables.add(drawables.poll());
         positionX = x;
         positionY = y;
