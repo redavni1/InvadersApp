@@ -2,6 +2,7 @@ package com.invaders.invadersapp;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -51,15 +52,17 @@ public class MovingRunnable extends InGame implements Runnable{
         float nextX = shipXPosition + distance;
         if (nextX > 0 && nextX < 1008) shipXPosition = nextX;
         else shipXPosition = edge;
+        Log.i("position", shipXPosition+"");
+        movingHandler.postDelayed(this, 17); // fps = 1000/17
     }
     /**
      * Start run to move ship.
      */
     @Override
     public void run() {
+        shipXPosition = ship.getX();
         move();
         ship.setX(shipXPosition);
-        movingHandler.postDelayed(this, 17); // fps = 1000/17
     }
 
     /**
