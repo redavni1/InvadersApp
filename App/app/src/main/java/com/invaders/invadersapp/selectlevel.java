@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,13 +16,23 @@ public class selectlevel extends AppCompatActivity {
     private TextView select_level;
     Button btnLevel1, btnLevel2, btnLevel3, btnLevel4,btnLevel5, btnLevel6, btnLevel7, btnmain;
     public int level;
+    public boolean isNextActivityButtonClick = false;
 
+    private final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            isNextActivityButtonClick = true;
+            finish();
+        }
+    };
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selectlevel);
+
+        this.getOnBackPressedDispatcher().addCallback(this, callback);
 
         select_level = (TextView) findViewById(R.id.leveltitle);
         btnLevel1 = findViewById(R.id.btnLevel1);
@@ -42,92 +53,59 @@ public class selectlevel extends AppCompatActivity {
         Thread t = new Thread(br);
         t.start();
 
-        btnLevel1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // action of level1 button
-                br.changeColor(1, "GREEN");
-                Intent intent = new Intent(getApplicationContext(), InGame.class);
-                level = 1;
-                startActivity(intent);
-            }
-        });
 
-        btnLevel2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // action of level2 button
-                br.changeColor(2, "GREEN");
-                Intent intent = new Intent(getApplicationContext(), InGame.class);
-                level = 2;
-                startActivity(intent);
-            }
-        });
-
-        btnLevel3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // action of level3 button
-                br.changeColor(3, "GREEN");
-                Intent intent = new Intent(getApplicationContext(), InGame.class);
-                level = 3;
-                startActivity(intent);
-            }
-        });
-
-        btnLevel4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // action of level4 button
-                br.changeColor(4, "GREEN");
-                Intent intent = new Intent(getApplicationContext(), InGame.class);
-                level = 4;
-                startActivity(intent);
-            }
-        });
-
-        btnLevel5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // action of level5 button
-                br.changeColor(5, "GREEN");
-                Intent intent = new Intent(getApplicationContext(), InGame.class);
-                level = 5;
-                startActivity(intent);
-            }
-        });
-
-        btnLevel6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // action of level6 button
-                br.changeColor(6, "GREEN");
-                Intent intent = new Intent(getApplicationContext(), InGame.class);
-                level = 6;
-                startActivity(intent);
-            }
-        });
-
-        btnLevel7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // action of level7 button
-                br.changeColor(7, "GREEN");
-                Intent intent = new Intent(getApplicationContext(), InGame.class);
-                level = 7;
-                startActivity(intent);
-            }
-        });
+        btnLevel1.setOnClickListener(v -> levelSelectEvent(1));
+        btnLevel2.setOnClickListener(v -> levelSelectEvent(2));
+        btnLevel3.setOnClickListener(v -> levelSelectEvent(3));
+        btnLevel4.setOnClickListener(v -> levelSelectEvent(4));
+        btnLevel5.setOnClickListener(v -> levelSelectEvent(5));
+        btnLevel6.setOnClickListener(v -> levelSelectEvent(6));
+        btnLevel7.setOnClickListener(v -> levelSelectEvent(7));
 
         //go back to main when click 'mainbutton'
         btnmain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 br.changeColor(8, "GREEN");
+
+                isNextActivityButtonClick = true;
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
 
+    }
+
+    public void levelSelectEvent(int level) {
+        this.level = level;
+        br.changeColor(level, "GREEN");
+
+        isNextActivityButtonClick = true;
+
+        MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.pause();
+
+        Intent intent = new Intent(getApplicationContext(), InGame.class);
+        startActivity(intent);
+    }
+
+    // Start playing game screen BGM when the activity starts
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.start();
+    }
+
+    // Pause the game screen BGM when the activity stops, unless transitioning to another activity
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (!isNextActivityButtonClick) {
+            MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.pause();
+        }else {
+            isNextActivityButtonClick = false;
+        }
     }
 }
