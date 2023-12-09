@@ -3,7 +3,7 @@ package com.invaders.invadersapp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnemyFormation extends InGame {
+public class EnemyFormation {
     /** 2D list to control enemies. */
     private List<List<Enemy>> enemyFormation;
 
