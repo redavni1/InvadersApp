@@ -68,7 +68,7 @@ public class DifficultyLevel implements Serializable {
         for (int i = 0; i < x; i++) {
             positionY = 600;
             for (int j = 0; j < y; j++) {
-                enemiesFormation[i][j] = new Enemy(R.id.enemy1 + num++, drawables[j][0], drawables[j][1], 504, positionY, (j+1)*10);
+                enemiesFormation[i][j] = new Enemy(R.id.enemy1 + num++, drawables[j][1], drawables[j][0], 504, positionY, (j+1)*10);
                 enemiesFormation[i][j].setAboutContext(mContext);
                 positionY -= 150;
             }
