@@ -23,8 +23,8 @@ public class EnemyTest {
     @Test
     public void enemyDrawableTest() {
         for (int i = 0; i < enemies.size(); i++) {
-            assertEquals(enemies.get(i).getNextDrawable(), R.drawable.enemyship_a1 + i*2);
-            assertEquals(enemies.get(i).getNextDrawable(), R.drawable.enemyship_a1 + i*2 + 1);
+            assertEquals(R.drawable.enemyship_a1 + i*2, enemies.get(i).getNextDrawable());
+            assertEquals(R.drawable.enemyship_a1 + i*2 + 1, enemies.get(i).getNextDrawable());
         }
     }
     @Test
@@ -32,17 +32,15 @@ public class EnemyTest {
         EnemyFormation enemyFormation = new EnemyFormation();
         for (int i = 0; i < enemies.size(); i++) {
             enemyFormation.setNewEnemiesList();
-            for (Enemy e : enemies) {
-                enemyFormation.addEnemy(e, i);
-            }
+            enemyFormation.addEnemy(enemies.get(i), i);
         }
-        assertEquals(enemyFormation.size(), 3);
+        assertEquals(3, enemyFormation.size());
         for (int i = 0; i < enemyFormation.size(); i++) {
-            assertEquals(enemyFormation.getOneList(i), Arrays.asList(enemies.get(i)));
+            assertEquals(Arrays.asList(enemies.get(i)), enemyFormation.getOneList(i));
         }
         for (int i = 0; i < enemyFormation.size(); i++) {
             enemyFormation.removeEnemy(enemies.get(i), i);
         }
-        assertEquals(enemyFormation.noEnemies(), true);
+        assertEquals(true,enemyFormation.noEnemies());
     }
 }
