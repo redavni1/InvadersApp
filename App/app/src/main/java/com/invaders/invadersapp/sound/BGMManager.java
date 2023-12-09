@@ -17,6 +17,7 @@ public class BGMManager {
     public MediaPlayer mMediaPlayerForGameScreenBGM;
     public MediaPlayer mMediaPlayerForButtonClick;
     public MediaPlayer mMediaPlayerForButtonMove;
+    public MediaPlayer mMediaPlayerInGame;
 
     /**
      * Constructor initializes the media players with the respective sound files.
@@ -28,8 +29,10 @@ public class BGMManager {
         mMediaPlayerForGameScreenBGM = MediaPlayer.create(context, R.raw.gamescreen_bgm);
         mMediaPlayerForButtonClick = MediaPlayer.create(context, R.raw.space_button);
         mMediaPlayerForButtonMove = MediaPlayer.create(context, R.raw.button_click);
+        mMediaPlayerInGame = MediaPlayer.create(context, R.raw.ingamebgm);
 
         mMediaPlayerForGameScreenBGM.setLooping(true); // Setting the game BGM to loop
+        mMediaPlayerInGame.setLooping(true);
     }
 
     /**
@@ -43,6 +46,10 @@ public class BGMManager {
         if (iBGMManager == null) {
             iBGMManager = new BGMManager(context);
         }
+        return iBGMManager;
+    }
+
+    public static BGMManager getBGMManagerInstance() {
         return iBGMManager;
     }
 }

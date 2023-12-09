@@ -18,6 +18,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.invaders.invadersapp.sound.BGMManager;
+
+import android.media.MediaPlayer;
+
+
+
+
 
 public class InGame extends AppCompatActivity {
     Intent intent;
@@ -81,7 +88,7 @@ public class InGame extends AppCompatActivity {
         scoreTextView = (TextView) findViewById(R.id.score);
         scoreTextView.setText(score+"");
     }
-    
+
     /**
      * Initialize about life.
      */
@@ -388,4 +395,21 @@ public class InGame extends AppCompatActivity {
 
     public float getShipXCoordination() { return shipImageView.getX(); }
     public int getScore() { return score; }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // InGame BGM start
+        MainActivity.mBGMManager.mMediaPlayerInGame.start();
+    }
+
+    // Pause the game screen BGM when the activity stops, unless transitioning to another activity
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        MainActivity.mBGMManager.mMediaPlayerInGame.seekTo(0);
+        MainActivity.mBGMManager.mMediaPlayerInGame.pause();
+    }
 }
