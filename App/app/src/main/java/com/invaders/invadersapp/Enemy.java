@@ -2,15 +2,16 @@ package com.invaders.invadersapp;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 
 import java.util.LinkedList;
 
-public class Enemy extends InGame {
+public class Enemy {
     /** ImageView of enemy. */
     private ImageView enemy;
+    /** ID of this enemy's ImageView. */
+    private int id;
     /** X coordination of enemy. */
     private float positionX;
     /** Y coordination of enemy. */
@@ -25,25 +26,33 @@ public class Enemy extends InGame {
     /**
      * Initialize enemy object.
      *
-     * @param context Context of InGame class.
-     * @param id ID of this enemy's ImageView.
+     * @param i ID of this enemy's ImageView.
      * @param d1 Drawable1 of this enemy.
      * @param d2 Drawable2 of this enemy.
      * @param x X coordination of this enemy.
      * @param y Y coordination of this enemy.
      * @param s Score assigned to this enemy.
      */
-    public Enemy(Context context, int id, int d1, int d2, float x, float y, int s) {
-        mContext = context;
-        enemy = (ImageView) ((InGame) mContext).findViewById(id);
+    public Enemy(int i, int d1, int d2, float x, float y, int s) {
+        id = i;
         drawables = new LinkedList<>();
         drawables.add(d1);
         drawables.add(d2);
-        enemy.setImageResource(drawables.getFirst());
         drawables.add(drawables.poll());
         positionX = x;
         positionY = y;
         score = s;
+    }
+
+    /**
+     * Set context.
+     *
+     * @param context Context of InGame class.
+     */
+    public void setAboutContext(Context context) {
+        mContext = context;
+        enemy = (ImageView) ((InGame) mContext).findViewById(id);
+        enemy.setImageResource(drawables.getFirst());
         enemy.setVisibility(View.GONE);
     }
 
@@ -54,7 +63,7 @@ public class Enemy extends InGame {
         enemy.setX(positionX);
         enemy.setY(positionY);
         enemy.setVisibility(View.VISIBLE);
-        enemyHandler.postDelayed(movingRunnable, 1500);
+        enemyHandler.postDelayed(changeDrawableRunnable, 1500);
     }
 
     /**
@@ -77,32 +86,40 @@ public class Enemy extends InGame {
     public void destroy() {
         ((InGame) mContext).plusScore(score);
         stopMoving();
-        enemy.setImageResource(R.drawable.explosion);
+        enemy.setImageResource(getExplosionDrawable());
         enemyHandler.postDelayed(explosionRunnable, 500);
         if (((InGame) mContext).enemyFormationIsEmpty()) ((InGame) mContext).gameOver();
     }
 
-//    private float distanceX = 200;
-//    private float distanceY = 0;
+    /**
+     * Handler to control enemy's runnable.
+     */
+    private Handler enemyHandler = new Handler();
 
     /**
-     * Handler to control enemy's runnables.
+     * Poll drawable from drawables and add it.
+     *
+     * @return drawable polled.
      */
-    private Handler enemyHandler = new Handler(Looper.getMainLooper());
+    public int getNextDrawable() {
+        int next = drawables.poll();
+        drawables.add(next);
+        return next;
+    }
 
     /**
-     * Runnable for enemy's moving.
+     * Runnable for change drawable.
      */
-    private Runnable movingRunnable = new Runnable() {
+    private Runnable changeDrawableRunnable = new Runnable() {
         @Override
         public void run() {
-//            enemy.setX(enemy.getX()+distanceX);
-//            enemy.setY(enemy.getY()+distanceY);
-            enemy.setImageResource(drawables.getFirst());
-            drawables.add(drawables.poll());
+            enemy.setImageResource(getNextDrawable());
             enemyHandler.postDelayed(this, 1500);
         }
     };
+    public int getExplosionDrawable() {
+        return R.drawable.explosion;
+    }
 
     /**
      * Runnable for enemy's explosion.
@@ -118,5 +135,5 @@ public class Enemy extends InGame {
     /**
      * Stop movingRunnable.
      */
-    public void stopMoving() { enemyHandler.removeCallbacks(movingRunnable); }
+    public void stopMoving() { enemyHandler.removeCallbacks(changeDrawableRunnable); }
 }
