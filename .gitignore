@@ -176,7 +176,7 @@ out
 
 # Gradle Files
 # gitignore template from github/gitignore
-.gradle
+
 **/build/
 !src/**/build/
 
