@@ -148,6 +148,8 @@ public class InGame extends AppCompatActivity {
         });
     }
 
+
+
     /** Handler to control shooting cool down runnable. */
     private Handler handlerShooting = new Handler(Looper.getMainLooper());
     /** Runnable for cool down. */
@@ -159,4 +161,13 @@ public class InGame extends AppCompatActivity {
             shootBtn.setEnabled(true);
         }
     };
+
+    // inGameMediaPlayer release resources
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (inGameMediaPlayer != null) {
+            inGameMediaPlayer.release();
+        }
+    }
 }
