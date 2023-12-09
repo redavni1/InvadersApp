@@ -74,7 +74,6 @@ public class ItemStore extends AppCompatActivity {
             HashMap<String, Object> itemMap = new HashMap<>();
             itemMap.put("image", itemImage[i]);
             itemMap.put("name", itemName[i]);
-            // 불필요한 중첩 데이터 구조 사용
             ArrayList<Integer> priceAndQuantity = new ArrayList<>();
             priceAndQuantity.add(itemPrice[i]);
             priceAndQuantity.add(itemQuantity[i]);
