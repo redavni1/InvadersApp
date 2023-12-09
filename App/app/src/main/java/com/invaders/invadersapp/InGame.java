@@ -19,6 +19,9 @@ import java.util.LinkedList;
 import java.util.Map;
 
 
+
+
+
 public class InGame extends AppCompatActivity {
     /** ImageView of ship. */
     private ImageView ship;
@@ -39,10 +42,19 @@ public class InGame extends AppCompatActivity {
     private Map<ImageView, BulletRunnable> runnableMap;
     /** Temporary ImageView for shot bullet. */
     private ImageView loadedBullet;
+
+    private MediaPlayer inGameMediaPlayer;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingame);
+
+        // MainActivity BGM STOP and release resources
+        if (MainActivity.mBGMManager != null && MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.isPlaying()) {
+            MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.stop();
+            MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.release();
+        }
 
         leftIcon = (ImageView) findViewById(R.id.left_icon);
         rightIcon = (ImageView) findViewById(R.id.right_icon);
