@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.invaders.invadersapp.sound.BGMManager;
+
 import android.media.MediaPlayer;
 
 
@@ -45,23 +47,10 @@ public class InGame extends AppCompatActivity {
     /** Temporary ImageView for shot bullet. */
     private ImageView loadedBullet;
 
-    private MediaPlayer inGameMediaPlayer;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ingame);
-
-        // MainActivity BGM STOP and release resources
-        if (MainActivity.mBGMManager != null && MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.isPlaying()) {
-            MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.stop();
-            MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.release();
-        }
-
-        // InGame BGM start
-        inGameMediaPlayer = MediaPlayer.create(this, R.raw.ingamebgm);
-        inGameMediaPlayer.start();
-
 
         leftIcon = (ImageView) findViewById(R.id.left_icon);
         rightIcon = (ImageView) findViewById(R.id.right_icon);
@@ -162,12 +151,20 @@ public class InGame extends AppCompatActivity {
         }
     };
 
-    // inGameMediaPlayer release resources
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (inGameMediaPlayer != null) {
-            inGameMediaPlayer.release();
-        }
+    protected void onStart() {
+        super.onStart();
+
+        // InGame BGM start
+        MainActivity.mBGMManager.mMediaPlayerInGame.start();
+    }
+
+    // Pause the game screen BGM when the activity stops, unless transitioning to another activity
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        MainActivity.mBGMManager.mMediaPlayerInGame.seekTo(0);
+        MainActivity.mBGMManager.mMediaPlayerInGame.pause();
     }
 }
