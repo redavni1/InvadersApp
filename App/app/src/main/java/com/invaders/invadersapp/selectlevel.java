@@ -10,8 +10,10 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.w3c.dom.Text;
 public class selectlevel extends AppCompatActivity {
+    Intent intent;
+    /** Previously generated object to control difficulty and level. */
+    private DifficultyLevel difficultyLevel;
     private BlinkingRunnable br;
     private TextView select_level;
     Button btnLevel1, btnLevel2, btnLevel3, btnLevel4,btnLevel5, btnLevel6, btnLevel7, btnmain;
@@ -31,6 +33,10 @@ public class selectlevel extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selectlevel);
+
+        intent = getIntent();
+        difficultyLevel = (DifficultyLevel) intent.getSerializableExtra("DifficultyLevel", DifficultyLevel.class);
+
 
         this.getOnBackPressedDispatcher().addCallback(this, callback);
 
@@ -80,12 +86,11 @@ public class selectlevel extends AppCompatActivity {
     public void levelSelectEvent(int level) {
         this.level = level;
         br.changeColor(level, "GREEN");
-
+        difficultyLevel.setLevel(level);
         isNextActivityButtonClick = true;
-
         MainActivity.mBGMManager.mMediaPlayerForGameScreenBGM.pause();
-
         Intent intent = new Intent(getApplicationContext(), InGame.class);
+        intent.putExtra("Level", difficultyLevel);
         startActivity(intent);
     }
 
