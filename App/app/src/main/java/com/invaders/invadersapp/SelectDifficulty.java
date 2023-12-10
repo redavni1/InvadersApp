@@ -19,6 +19,8 @@ public class SelectDifficulty extends AppCompatActivity {
     private TextView title;
     /** Runnable object for text blinking. */
     private BlinkingRunnable br;
+    /** Object to control difficulty and level. */
+    private DifficultyLevel difficultyLevel = new DifficultyLevel();
     private boolean isNextActivityButtonClick = false;
 
     private final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -55,10 +57,12 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
+                difficultyLevel.setDifficulty("EASY");
 
                 isNextActivityButtonClick = true;
 
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
+                intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);
             }
         });
@@ -70,7 +74,9 @@ public class SelectDifficulty extends AppCompatActivity {
 
                 isNextActivityButtonClick = true;
 
+                difficultyLevel.setDifficulty("NORMAL");
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
+                intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);
             }
         });
@@ -79,10 +85,12 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
+                difficultyLevel.setDifficulty("HARD");
 
                 isNextActivityButtonClick = true;
 
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
+                intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);
             }
         });
@@ -91,10 +99,12 @@ public class SelectDifficulty extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 br.changeColor(1, "GREEN");
+                difficultyLevel.setDifficulty("HARDCORE");
 
                 isNextActivityButtonClick = true;
 
                 Intent intent = new Intent(getApplicationContext(), selectlevel.class);
+                intent.putExtra("DifficultyLevel", difficultyLevel);
                 startActivity(intent);
             }
         });
