@@ -22,19 +22,33 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.snackbar.Snackbar;
 
 public class ItemStore extends AppCompatActivity {
-    /* grid view for item grid*/
+    /**
+     * grid view for item grid
+     */
     GridView gridView;
-    /* array for item images png in drawable  */
+    /**
+     * array for item images png in drawable
+     */
     int[] itemImage = {R.drawable.item_shield, R.drawable.item_bomb, R.drawable.item_bstone, R.drawable.item_pstone};
-    /* array for item name */
+    /**
+     *  array for item name
+     */
     String[] itemName = {"Shield", "Bomb", "Blue Gem", "Pink Gem"};
-    /* array for item price*/
+    /**
+     *  array for item price
+     */
     int[] itemPrice = {50, 100, 150, 150};
-    /* array for item quantity (the number of items this user owns currently) */
+    /**
+     * array for item quantity (the number of items this user owns currently)
+     */
     int[] itemQuantity = {0,1,2,3};
-    /* the number of coins this user owns currently */
+    /**
+     *  the number of coins this user owns currently
+     */
     int coinQuantity = 200 ;
-    /** Adapter for the grid view */
+    /**
+     *  Adapter for the grid view
+     */
     ItemAdapter itemAdapter;
 
 
@@ -59,7 +73,9 @@ public class ItemStore extends AppCompatActivity {
         itemAdapter = new ItemAdapter(ItemStore.this, itemImage, itemName, itemPrice, itemQuantity);
         gridView.setAdapter(itemAdapter);
 
-        /** Set up item click listener */
+        /**
+         *  Set up item click listener
+         */
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
