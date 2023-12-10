@@ -51,6 +51,6 @@ dependencies {
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0'")
     testImplementation ("org.mockito:mockito-core:3.3.3")
     testImplementation ("androidx.test:core:1.0.0")
-    testImplementation ("org.robolectric:robolectric:4.9")
+    testImplementation ("org.robolectric:robolectric:4.9.2")
     testImplementation ("androidx.compose.ui:ui-test-junit4:1.5.4")
 }
